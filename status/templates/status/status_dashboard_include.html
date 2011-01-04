@@ -1,0 +1,109 @@
+
+	<div id="community" class="grid_6 community">
+	
+		<div class="title clearfix">
+			<h3>Share Ideas</h3>
+	
+			<div class="TitleOptions">
+				<ul>
+					<li class="active"><a id="view_recent_activity" href="">Recent Ideas</a></li>
+                    <li>
+                        <a      
+                                id="view_my_activity" 
+                                href="{% url user_activity campaign_slug=campaign.slug %}?user_id={{geuser.id}}">
+                            My Ideas
+                        </a>
+                    </li>
+				</ul>		
+                <form 
+                        id="filter_activity" 
+                        action="{% url user_activity campaign_slug=campaign.slug %}" 
+                        autocomplete="off" 
+                        method="get">
+					<input 	id='af_user_display' 
+							name='af_user_display' 
+							{% if af_user %}class="active"{% else %}class="clear_field"{% endif %} 
+							type="text" 
+							value="{% firstof af_user 'Search users'%}" />
+					<input id='af_user_id' name='af_user_id' type='hidden' />
+				</form>
+				
+			</div><!-- ends title options -->
+		</div><!-- ends title -->
+	
+		<div id="recent_activity">
+			<div class="FeedEntry clearfix">
+				<div class="photo">
+					<a id="status_profile_link" href="{{geuser.get_absolute_url}}" class="profile_link" rel="user-{{geuser.id}}">
+                        <img 
+                            width="50" height="41"
+                            src="{{geuser.thumb_url}}" alt="Picture of me" title="{{geuser}}" />
+					</a>
+				</div>
+                <img id="status_nub" width="12" height="21" src="{{MEDIA_2}}images/backgrounds/nub_left.png" alt="" />
+                <form 
+                        id="idea_form" 
+                        class="status" 
+                        action="{% url status_post campaign_slug=campaign.slug %}" method="post">
+                    <textarea 
+                        id="status_field" 
+                        name="status" 
+                        class="inactive clear_field" 
+                        rows="1" 
+                        cols="10"
+                        maxlength="140">What's on your mind?
+                    </textarea>
+                    <div id="status_left">
+                        <ul class="status_actions">
+                            <li>Create:</li>
+                            <li>idea | </li>
+                            <li><a id="create_pledge" href="">pledge</a></li>
+                        </ul>
+                    </div>
+                    <div id="status_right">
+                        <div id="status_remaining_chars"></div>
+                        <input type="submit" value="Share" />
+                    </div>
+				</form>
+                <form 
+                        id="pledge_form" 
+                        class="status" 
+                        style="display:none"
+                        action="{% url action_create campaign_slug=campaign.slug %}" method="post">
+                    <label>{{geuser}} pledges to <input type="text" required name="title" /></label>
+                    <label>Description:
+                        <textarea id="description_field" 
+                            name="description" 
+                            class="inactive clear_field" 
+                            rows="1" 
+                            cols="10"
+                            maxlength="140">More detail on what this pledges involves
+                        </textarea>
+                    </label>
+                    <div id="status_left">
+                        <ul class="status_actions">
+                            <li>Create:</li>
+                            <li><a id="create_idea" href="">idea</a> | </li>
+                            <li>pledge</li>
+                        </ul>
+                    </div>
+                    <div id="status_right">
+                        <div id="status_remaining_chars"></div>
+                        <input type="submit" value="Create" />
+                    </div>
+				</form>
+			</div><!-- ends feed entry -->
+			{% with recent_activity_list as activity_list %}
+				{% include 'status/list_include.html' %}
+			{% endwith %}
+
+            {% if recent_activity_list %}
+                <a id="more_activity" href="{% url next_activity campaign_slug=campaign.slug %}?start=10">More Ideas...</a>
+            {% endif %}
+		</div>
+        <div id="my_activity" style="display:none;">
+            <img width="16" height="16" src="{{MEDIA_2}}images/ajax-loader.gif" alt="Loading" />
+        </div>
+		<div id="filtered_activity" style="display:none;">&nbsp;</div>
+		
+	</div><!-- ends community -->

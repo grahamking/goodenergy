@@ -1,0 +1,6 @@
+{% for action in action_list %}
+    {% include 'action/action_full_include.html' %}
+{% empty %}
+    You have not made any pledges yet.
+{% endfor %}
+

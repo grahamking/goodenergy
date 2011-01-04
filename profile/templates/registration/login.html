@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %} : {{campaign.name}} Login{% endblock %}
+
+{% block content %}
+
+	<div id="login" class="container_12">
+
+		<div class="grid_5">
+            <h1>
+                {% if campaign.login_title %}
+                    {{campaign.login_title}} 
+                {% else %}
+                    {{campaign.name}} Login
+                {% endif %}
+            </h1>
+
+			<form action="{{ app_path }}" method="post" id="login-form">
+				<fieldset>
+					<h2>Email</h2>
+					{{ form.email }}
+					<span class="error">
+						{% for err in form.email.errors %}
+							{{err}}{% if not forloop.last %}, {% endif %}
+						{% endfor %}
+						</span>
+						
+					<h2>Password</h2>
+					{{ form.password }}
+					<span class="error">
+						{% for err in form.password.errors %}
+							{{err}}{% if not forloop.last %}, {% endif %}
+						{% endfor %}
+						{% for err in form.non_field_errors %}
+							{{err}}{% if not forloop.last %}, {% endif %}
+						{% endfor %}
+					</span>
+				</fieldset>
+				
+				<input type="submit" value="Sign in"/>
+		
+			</form>
+
+			<h2 id="action_sign_up">
+                &rsaquo; 
+                <a class="no_underline" href="{% url registration_register campaign_slug=campaign.slug %}">
+                    New? Create your account now
+                </a>
+			</h2>
+
+            &rsaquo; 
+            <a class="no_underline" href="{% url password_reset campaign_slug=campaign.slug %}">
+                Forgot your password?
+            </a>
+
+		</div>
+
+        {% if campaign.login_html %}
+            <div class="grid_7 login_info">
+                {{campaign.login_html|safe}}
+            </div>
+        {% endif %}
+
+	</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+<script type="text/javascript">
+
+$(function(){ 
+    $('#id_email').focus(); 
+});
+</script>
+{% endblock %}

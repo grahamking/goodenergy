@@ -1,0 +1,16 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+
+<h1>Delete indicator "{{indicator.question}}"?</h1>
+
+<form action="{% url indicator_delete indicator_id=indicator.id %}" method="post">
+    <input type="submit" value="Yes, delete {{indicator}}" />
+</form>
+
+<p style="margin-top: 2em">
+    <a href="{% url indicator_list campaign_id=indicator.campaign.id %}">No, do not delete it</a>
+</p>
+
+{% endblock %}
+

@@ -1,0 +1,41 @@
+[
+    {
+        "model": "auth.User",
+        "pk": 2,
+        "fields": {
+            "username": "AVERAGE",
+            "first_name": "Average",
+            "last_name": "",
+            "email": "average@openenergy.ca",
+            "password": "!"
+        }
+    },
+    {
+        "model": "profile.Profile",
+        "pk": 1,
+        "fields": {
+           "user": 2,
+           "created": "1970-01-01"
+        }
+    },
+
+    {
+        "model": "auth.User",
+        "pk": 3,
+        "fields": {
+            "username": "sample",
+            "first_name": "Sample",
+            "last_name": "User",
+            "email": "sample@openenergy.ca",
+            "password": "!"
+        }
+    },
+    {
+        "model": "profile.Profile",
+        "pk": 2,
+        "fields": {
+           "user": 3,
+           "created": "1970-01-01"
+        }
+    }
+]

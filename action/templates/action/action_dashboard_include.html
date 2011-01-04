@@ -1,0 +1,50 @@
+
+    <div id="action-learn-dialog" style="display:none;">
+        <img width="16" height="16" src="{{MEDIA_2}}images/ajax-loader.gif" alt="Loading" />
+    </div>
+	<div id="actions" class="grid_6">
+
+		<div class="title clearfix">
+			<h3>Take Action</h3>
+			<div class="TitleOptions">
+				<ul>
+                    <li class="active"><a id="view_all_actions" href="">All Pledges</a></li>
+					<li><a id="view_popular_actions" href="">Popular Pledges</a></li>
+                    <li>
+                        <a id="view_my_actions" 
+                            href="{% url user_actions campaign_slug=campaign.slug,username=request.user.username %}">
+                            My Pledges
+                        </a>
+                    </li>
+				</ul>
+                {% comment %}
+                <form 
+                    id="search_actions" 
+                    action="{% url action_search campaign_slug=campaign.slug %}" 
+                    method="get">
+
+					<label>Search</label>
+					<input class="clear_field" name="q" type="text" value="Search actions" />
+				</form>
+                {% endcomment %}
+			</div><!-- ends title options -->
+		</div><!-- ends title -->
+
+        <div id="all_actions" class="action_tabsheet">
+            {% with all_actions as action_list %}
+                {% include 'action/action_list_include.html' %}
+            {% endwith %}
+		</div>
+		<div id="popular_actions" class="action_tabsheet" style="display:none">
+            {% with popular_actions as action_list %}
+                {% include 'action/action_list_include.html' %}
+            {% endwith %}
+		</div>
+        <div id="my_actions" style="display:none;" class="action_tabsheet">
+            <img width="16" height="16" src="{{MEDIA_2}}images/ajax-loader.gif" alt="Loading..." />
+        </div>
+		<div id="search_results_actions" style="display:none;" class="action_tabsheet">
+			<p>Your search results will appear here</p>
+		</div>
+		
+	</div><!-- ends actions -->

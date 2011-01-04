@@ -1,0 +1,12 @@
+[
+    {
+        "model": "status.Entry",
+        "pk": 1,
+        "fields": {
+            "who": 2,
+            "when": "1970-01-01",
+            "msg": "Welcome to Open Energy!",
+            "campaign": 1
+        }
+    }
+]

@@ -1,0 +1,14 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+<h1>Delete campaign {{campaign}}?</h1>
+
+<form action="{% url campaign_delete campaign_id=campaign.id %}" method="post">
+    <input type="submit" value="Yes, delete {{campaign}}" />
+</form>
+
+<p style="margin-top: 2em">
+    <a href="{% url campaign_list %}">No, do not delete it</a>
+</p>
+
+{% endblock %}

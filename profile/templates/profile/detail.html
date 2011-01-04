@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load compressed %}
+
+{% block title %} - {{user}}{% endblock %}
+
+{% block content %}
+
+    <div class="grid_3">
+        <div id="profile-photo-frame" class="profile_box">
+            <div class="title clearfix"><h3>{{user}}</h3></div>
+            {% if is_me %}
+                <a href="{% url profile_crop campaign_slug=campaign.slug %}">
+                    <img id="profile-dialog-pic" src="{{user.profile_pic_url}}" />
+                </a>
+                <div class="picture_caption">Click the picture to upload a new one</div>
+            {% else %}
+                <img id="profile-dialog-pic" src="{{user.profile_pic_url}}" />
+            {% endif %}
+        </div>
+        {% if is_me %}
+            <div id="about_user">
+                <form id="about_me_edit" action="{% url profile_about campaign_slug=campaign.slug %}" method="post">
+                    <textarea name="about">{% if user.about %}{{user.about}}{% else %}Tell us something about yourself{% endif %}</textarea>
+                    <input type="submit" value="Update" />
+                    <div id="remaining_chars"></div>
+                </form>
+            </div>
+        {% else %}
+            {% if user.about %}
+                <div id="about_user">
+                    <p id="about_me">{{ user.about|linebreaksbr }}</p>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div> <!-- grid_3 -->
+
+    <div class="grid_3">
+
+        {% if star_count %}
+            <div class="profile_box">
+                <div class="title clearfix"><h3>Participation</h3></div>
+                {% for x in star_count %}
+                    <img class="star" src="/media/images/star.png" alt="Star" />
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="profile_box">
+            <div class="title clearfix"><h3>Achievements</h3></div>
+            <ul id="achieve">
+                {% for item in achieve %}
+                <li>
+                    {% if item.type %}<b>{{item.type}}:</b>{% endif %}
+                    {{item.msg}}
+                    <div class="timestamp">{{item.when|timesince}} ago</div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="grid_6">
+
+		<div class="title clearfix"><h3>Recent Ideas</h3></div>
+		<div id="community">
+            {% include 'status/list_include.html' %}
+        </div>
+
+    </div>
+
+    <div id="settings-dialog" class="settings-dialog" title="Your settings" style="display:none;">
+        <img width="16" height="16" src="{{MEDIA_2}}images/ajax-loader.gif" alt="Loading" />
+    </div>
+
+    <div id="invite-dialog" style="display:none" title="Earn extra points by inviting others">
+        <img width="16" height="16" src="{{MEDIA_2}}images/ajax-loader.gif" alt="Loading" />
+    </div>
+
+    <a id="fdbk_tab" class="fdbk_tab_right" style="background-color: rgb(62, 163, 243);" href="/feedback/">
+        FEEDBACK
+    </a>
+{% endblock content %}
+
+{% block scripts %}
+{{block.super}}
+<script type="text/javascript">
+    var GOODENERGY = {};
+    GOODENERGY.DATA = {
+	    isDone: false,
+        hasGraph: false, 
+        currentUserId: {{geuser.id}},
+        campaignSlug: '{{campaign.slug}}',
+        hasPic: {% if geuser.has_pic %}true{% else %}false{% endif %},
+        isNewUser: false
+    };
+</script>
+{% compressed_js 'all' %}
+<script type="text/javascript">
+    var MAX = 250;
+    $('#about_me_edit textarea').keyup(function(){
+        var currentVal = $(this).val();
+        var remain = MAX - currentVal.length;
+        if ( remain < 0 ) {
+            remain = 0;
+            $(this).val( currentVal.substring(0, MAX) );
+        }
+        $('#remaining_chars').text(remain +' characters left');
+    });
+</script>
+{% endblock scripts %}
+

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{user}}</h1>
+
+<table>
+	<tr>
+		<th>Date</th>
+		{% for indicator in indicator_list %}
+			<th>{{indicator.name}}</th>
+		{% endfor %}
+	</tr>
+	
+	<tr>
+	{% for answer in answer_list %}
+		{% ifchanged %}
+		</tr>
+		<tr>
+			<th>{{answer.action_date}}</th>
+		{% endifchanged %}
+		<td>{{answer.value}} <!-- Indicator: {{answer.indicator.name}} Action date: {{answer.action_date}} --></td>
+	{% endfor %}
+	</tr>
+	<tr>
+		<th>Date</th>
+		{% for indicator in indicator_list %}
+			<th>{{indicator.name}}</th>
+		{% endfor %}
+	</tr>
+	
+	
+	
+</table>
+
+{% endblock %}

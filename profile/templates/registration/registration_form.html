@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %} : Join{% endblock %}
+
+{% block content %}
+
+	<div id="register" class="container_12">
+
+		<div class="grid_5">
+            <h1>
+                {% if campaign.join_title %}
+                    {{campaign.join_title}}
+                {% else %}
+                    Welcome! Join the campaign
+                {% endif %}
+            </h1>
+			
+			<form action="{{ app_path }}" method="post" id="login-form" enctype="multipart/form-data">
+				<fieldset>
+					<h2>First name</h2>
+					{{ form.first_name }}
+					<span class="error">
+					{% for err in form.first_name.errors %}
+						{{err}}{% if not forloop.last %}, {% endif %}
+					{% endfor %}
+					</span>
+					<h2>Last name</h2>
+					{{ form.last_name }}
+					<span class="error">
+					{% for err in form.last_name.errors %}
+						{{err}}{% if not forloop.last %}, {% endif %}
+					{% endfor %}
+					</span>
+				</fieldset>
+				
+				<fieldset>
+					<h2>Email</h2>
+					{{ form.email }}
+					<span class="error">
+					{% for err in form.email.errors %}
+						{{err}}{% if not forloop.last %}, {% endif %}
+					{% endfor %}
+					</span>
+					
+					<h2>Password</h2>
+					{{ form.password }}
+					<span class="error">
+					{% for err in form.password.errors %}
+						{{err}}{% if not forloop.last %}, {% endif %}
+					{% endfor %}
+					</span>
+				</fieldset>
+
+                {% if form.has_groups %}
+                    <fieldset>
+                        <h2 class="optional">Group</h2>
+                        {{form.group}}
+                        <span class="error">
+                        {% for err in form.group.timezone %}
+                            {{err}}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                        </span>
+                    </fieldset>
+                {% endif %}
+
+				<fieldset>
+					<h2 class="optional">Timezone</h2>
+					{{form.timezone}}
+					<span class="error">
+					{% for err in form.password.timezone %}
+						{{err}}{% if not forloop.last %}, {% endif %}
+					{% endfor %}
+					</span>
+				</fieldset>
+
+                {% comment %}
+				<fieldset>
+                    <div id="profile_pic_default">
+                        <h2 class="optional">OR leave blank to use this default</h2>
+                        <img 
+                            id="profile_pic" 
+                            src="/media/images/headshot_placeholder.jpg" 
+                            height="80" />
+                    </div>
+					<h2 class="optional">Upload a Profile Picture</h2>
+					{{form.picture}}
+				</fieldset>
+			    {% endcomment %}
+
+				<input type="submit" value="Join now"/>
+		
+			</form>
+	
+			<h2 id="action_sign_up">
+                <a class="no_underline" href="{% url auth_login campaign_slug=campaign.slug %}">
+                    &rsaquo; I already have an account
+                </a>
+            </h2>
+
+		</div>
+
+        {% if campaign.join_html %}
+            <div class="grid_7 login_info">
+                {{campaign.join_html|safe}}
+            </div>
+        {% endif %}
+
+	</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+<script type="text/javascript">
+$(function(){
+
+    function onEmailCheck(data, textStatus) {
+        var errContainer = $('#id_email + span.error');
+        if (data == 1) {
+            errContainer.text('Email address already in use');
+        }
+        else {
+            errContainer.text('');
+        }
+    }
+
+    {% comment %}
+    function onGravatarCheck(data, textStatus) {
+        $('#profile_pic').attr('src', data).show();
+    }
+    {% endcomment %}
+
+    $('#id_email').blur(function(event){
+        var email = $(this).val();
+        $.get(
+            '{% url is_email_registered campaign_slug=campaign.slug %}', 
+            {'email': email}, 
+            onEmailCheck);
+        {# $.get('{% url gravatar_url campaign_slug=campaign.slug %}', {'email': email}, onGravatarCheck); #}
+    });
+
+});
+</script>
+{% endblock %}
+

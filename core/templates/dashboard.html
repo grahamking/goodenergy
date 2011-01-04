@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load goodenergy %}
+{% load smartif %}
+{% load compressed %}
+{% load cache %}
+
+{% block title %} - {{next.indicator.name}}{% endblock %}
+
+{% block outer_content %}
+
+<div id="UserInfo" class="clearfix module">
+
+    {% include 'tabs.html' %}
+
+    <div id="top_section_container" class="container_12 clearfix">
+
+        <div id="user_info_center" class="grid_12 omega">
+
+            <a  
+                id="question_pic_profile_link" 
+                href="{{ geuser.get_absolute_url }}" 
+                class="{userId: {{geuser.id}}}">
+                <img id="question_thumb" 
+                    width="30" height="25"
+                    src="{{geuser.thumb_url}}" alt="" />
+            </a>
+            
+            <div class="top_title">
+                <h2>
+                    {{next}}
+                </h2>
+            </div>
+
+            <div id="question-container" class="grid_4 alpha omega">
+                <div class="title clearfix">
+                    <h3>Your answer</h3>
+                </div>
+
+                <div class="TitleOptions">
+                    <span id="remaining_questions_msg"></span>
+                </div>					
+                <form id="question" action="{% url single_input campaign_slug=campaign.slug %}" method="post">
+
+                    <input id="indicator_id" type="hidden" name="indicator_id" value="{{next.indicator.id}}" />
+                    <input name="skip" id="id_skip" type="hidden" />
+
+                    {% if next.indicator.display_type == 'likert' %}
+                    <ul class="likert"> 
+
+                        {% for option in next.indicator.option_set.all %}
+                            <li>
+                                <label for="id_answer_{{forloop.counter0}}">
+                                    <input 
+                                            id="id_answer_{{forloop.counter0}}" 
+                                            value="{{option.position}}" 
+                                            name="answer" 
+                                            type="radio"
+                                            {% ifequal current_answer.num_value option.position %}
+                                                checked="checked"
+                                            {% endifequal %}/>
+                                    {{option}}
+                                </label>
+                            </li>
+                        {% endfor %}
+
+                        {% comment %}
+                        <li>
+                            <label for="id_answer_0">
+                                <input id="id_answer_0" value="1" name="answer" type="radio"
+                                {% ifequal current_answer.num_value 1 %}checked="checked"{% endifequal %}/>
+                                Never
+                            </label>
+                        </li>
+                        <li>
+                            <label for="id_answer_1">
+                                <input id="id_answer_1" value="2" name="answer" type="radio" 
+                                {% ifequal current_answer.num_value 2 %}checked="checked"{% endifequal %}/>
+                                Rarely
+                            </label>
+                        </li>
+                        <li>
+                            <label for="id_answer_2">
+                                <input id="id_answer_2" value="3" name="answer" type="radio" 
+                                {% ifequal current_answer.num_value 3 %}checked="checked"{% endifequal %}/>
+                                Sometimes
+                            </label>
+                        </li>
+                        <li>
+                            <label for="id_answer_3">
+                                <input id="id_answer_3" value="4" name="answer" type="radio" 
+                                {% ifequal current_answer.num_value 4 %}checked="checked"{% endifequal %}/>
+                                Often
+                            </label>
+                        </li>
+                        <li>
+                            <label for="id_answer_4">
+                                <input id="id_answer_4" value="5" name="answer" type="radio" 
+                                {% ifequal current_answer.num_value 5 %}checked="checked"{% endifequal %}/>
+                                Always
+                            </label>
+                        </li>
+                        {% endcomment %}
+                        <li class="wrong" style="display:none;">
+                            Select one of the answers above
+                        </li>
+                        
+                    </ul>
+                    {% endif %}
+
+                    {% if next.indicator.display_type == 'number' %}
+                    <ul class="number">
+                        <li>
+                            <label for="id_answer_number">Answer:</label> 
+                            <input 
+                                    name="answer" 
+                                    id="id_answer_number" 
+                                    type="text" 
+                                    value="{{current_answer.num_value}}" />
+                        </li>
+                        <li class="wrong" style="display:none;">
+                            Enter a number 
+                        </li>
+                        <li class="target">
+                            {% if next.indicator.target %}Target: {{next.indicator.target}}{% endif %}
+                        </li>
+                        
+                    </ul>
+                    {% endif %}
+                    
+                {% comment %}
+                <p class="answer" {% if not previously.value %}style="display:none;"{% endif %}>
+                    Previously you answered <strong>{{previously.value}}</strong>
+                </p>
+                {% endcomment %}
+                
+                <input type="submit" value="Next" />
+               
+                <div id="skip"><a href="">Not applicable</a></div>
+
+                </form>
+
+            </div> {# end question-container #}
+
+            <div id="learn-more-container" class="grid_4">
+                <div class="title clearfix">
+                    <h3>Tips</h3>
+                </div>
+                {{next.indicator.description|safe}}
+            </div>
+
+            {% if next.indicator.image %}
+                <img id="indicator_image" width="300" height="226" src="{{next.indicator.image.url}}" alt="{{next.indicator.name}}" />
+            {% else %}
+                <div id="graph-container" class="grid_4 alpha omega">
+                
+                    <div class="title clearfix">
+                        <h3>How you compare</h3>
+                    </div>
+
+                    {# Graph canvas gets inserted into here #}
+                    <div id="graph" style="width:98%; height:177px;"></div>
+                
+                </div> {# end graph-container #}
+            {% endif %}
+
+        </div> {# end user_info_center #}
+
+    </div> {# end container_12 #}
+
+</div><!-- ends User Info -->
+
+{% include 'dashboard_bottom.html' %}
+
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+
+<script type="text/javascript">
+    var GOODENERGY = {};
+    GOODENERGY.DATA = {
+	    isDone: false,
+        hasGraph: {% if next.indicator.image %}false{% else %}true{% endif %}, 
+        graph: { start_date: {{campaign_start_date|js_utc}}, end_date: {{campaign_end_date|js_utc}} },
+        {% if not next.indicator.image %}
+            indicator: {{indicator_json|safe}},
+        {% endif %}
+        currentUserId: {{geuser.id}},
+        campaignSlug: '{{campaign.slug}}',
+        hasPic: {% if geuser.has_pic %}true{% else %}false{% endif %},
+        isNewUser: {% if geuser.is_new_user %}true{% else %}false{% endif %}
+    };
+</script>
+
+<!--[if IE]><script language="javascript" type="text/javascript" src="/media/js/excanvas.min.js"></script><![endif]-->
+{% compressed_js 'all' %}
+
+{% endblock %}

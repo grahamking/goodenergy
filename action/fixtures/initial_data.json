@@ -1,0 +1,23 @@
+[
+    {
+        "model": "action.Action",
+        "pk": 1,
+        "fields": {
+            "campaign": 1,
+            "title": "Write to a local politican",
+            "description": "Write to someone that represents you locally. Let them know what you care about. Make your voice heard.",
+            "created_by": 2,
+            "created": "1970-01-01"
+        }
+    },
+
+    {
+        "model": "action.Pledge",
+        "pk": 1,
+        "fields": {
+           "user": 2,
+           "action": 1,
+           "created": "1970-01-01"
+        }
+    }
+]

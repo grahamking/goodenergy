@@ -1,0 +1,85 @@
+<div id="profile-content">
+
+    {% comment %}
+    <div class="profile_box">
+        <div class="title clearfix"><h3>Inspiration</h3></div>
+        <div id="insp_points" class="big_num">{{ user.inspiration_points }}</div>
+
+        {% if geuser.inspiration_points_credit > 0 and not is_me %}
+            <form 
+                id="give_inspiration_point" 
+                action="{% url give_inspiration_point campaign_slug=campaign.slug,user_id=user.id %}" 
+                method="post">
+                <input type="submit" value="Give Inspiration Point" />
+            </form>
+            <div class="points" style="display:none"></div>
+        {% else %}
+            <div class="points"></div>
+        {% endif %}
+    </div>
+    {% endcomment %}
+
+        <div id="profile-photo-frame" class="profile_box">
+            <a href="{% url profile_crop campaign_slug=campaign.slug %}">
+                <img id="profile-dialog-pic" src="{{user.profile_pic_url}}" />
+            </a>
+            {% if is_me %}
+                <div class="picture_caption">Click the picture to upload a new one</div>
+            {% endif %}
+        </div>
+
+        <div class="profile_box">
+            <div class="title clearfix"><h3>Points</h3></div>
+            <div class="big_num">{{ user.participation_points }}</div>
+            <div class="points"></div>
+        </div>
+
+        {% comment %}
+        <div class="profile_box">
+            <div class="title clearfix"><h3>Grade</h3></div>
+            <div class="big_num">{{user.rank}}</div>
+            <div class="points" style="color: #A5C266">{{user.ranking}} / {{user_count}}</div>
+        </div>
+        {% endcomment %} 
+
+        {% if is_me %}
+            <div id="about_user">
+                <form id="about_me_edit" action="{% url profile_about campaign_slug=campaign.slug %}" method="post">
+                    <textarea name="about">{% if user.about %}{{user.about}}{% else %}Tell us something about yourself{% endif %}</textarea>
+                    <input type="submit" value="Update" />
+                    <div id="remaining_chars"></div>
+                </form>
+            </div>
+        {% else %}
+            {% if user.about %}
+                <div id="about_user">
+                    <p id="about_me">{{ user.about|linebreaksbr }}</p>
+                </div>
+            {% endif %}
+        {% endif %}
+
+    <ul id="life_stream">
+        {% for item in stream %}
+        <li>
+            {% if item.type %}<b>{{item.type}}:</b>{% endif %}
+            {{item.msg}}
+            <span class="timestamp">{{item.when|timesince}} ago</span>
+        </li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+<script type="text/javascript">
+    var MAX = 250;
+    $('#about_me_edit textarea').keyup(function(){
+        var currentVal = $(this).val();
+        var remain = MAX - currentVal.length;
+        if ( remain < 0 ) {
+            remain = 0;
+            $(this).val( currentVal.substring(0, MAX) );
+        }
+        $('#remaining_chars').text(remain +' characters left');
+    });
+</script>
+

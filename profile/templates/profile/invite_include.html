@@ -1,0 +1,30 @@
+
+<blockquote>{{text}}</blockquote>
+
+<a class="button" href="" onclick="return fbs_click();">
+    <img src="/media/images/buttons/facebook.png" alt="" /> Send to Facebook
+</a>
+
+<a class="button" href="http://twitter.com/home?status={{text|urlencode}}" target="_blank">
+    <img src="/media/images/buttons/twitter.png" alt="" /> Send to Twitter
+</a>
+<br/>
+<small>You will get a chance to confirm the message before it is posted</small>
+{% comment %}
+<h2>Why?</h2>
+<ul class="sane">
+    <li>Help {{organization}} succeed</li>
+    <li>Help your friends to live greener</li>
+    <li>And, <b>get 5 points every time a friend signs up!</b></li>
+</ul>
+{% endcomment %}
+
+{# Facebook share #}
+<script type="text/javascript">
+    function fbs_click() {
+        var u='{{campaign.get_refer_url}}',
+            t='{{text}}';
+        window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');
+        return false;
+    }
+</script>

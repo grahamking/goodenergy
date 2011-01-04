@@ -1,0 +1,142 @@
+
+<div class="action clearfix is_full">
+
+    <div class="learn_contents" style="display:none">
+        {{action.learn_more|safe}}
+    </div>
+
+    {% if action.learn_more %}
+        <div class="action_learn_more">
+            <a class="action_learn {action_id: {{action.id}}}" href="">Learn More</a>
+        </div>
+    {% endif %}
+    <h4 class="action_title">
+        <a href="">
+            <img class="basic_action" width="16" height="16" src="{{MEDIA_1}}images/plus_16.png" alt="expand" />
+            <img class="full_action" width="16" height="16" style="display:none;" src="{{MEDIA_1}}images/minus_16.png" alt="contract" />
+            {{action}}
+            {% if action.is_completed %}
+                <img id="action_complete_img" src="{{MEDIA_2}}images/buttons/accept.png" 
+                    title="You successfully completed this action"
+                    alt="tick"  
+                    height="16px"/>
+    		{% endif %}
+        </a>
+    </h4>
+
+    <div class="ActionRight">
+         <div class="CauseCount">
+             {{action.total_pledges}}
+             <strong>Pledge{{action.total_pledges|pluralize}}</strong>
+         </div>
+         {% comment %}
+         <div class="join_leave open_change">
+ 
+             <form class="leave" 
+                 {% if geuser not in change.members.all %}style="display:none"{% endif %}
+                 action="{% url change_leave campaign_slug=campaign.slug,slug=change.slug %}" 
+                 method="post">
+                 <input type="submit" value="Leave this change" class="join_leave_button" />
+             </form>
+ 
+             <form class="join" 
+                 {% if geuser in change.members.all %}style="display:none"{% endif %}
+                 action="{% url change_join campaign_slug=campaign.slug,slug=change.slug %}" 
+                 method="post">
+                 <input type="submit" value="Support this change" class="join_leave_button" />
+             </form>		
+             
+         </div>
+         {% endcomment %}
+     </div>
+
+    <div class="CauseContent">
+        {# Description #}
+        <div class="photo">
+            <span>
+                <img 
+                    width="50" height="41"
+                    src="{{action.created_by_thumbnail}}" 
+                    alt="Picture of {{action.created_by}}" 
+                    title="{{action.created_by}}" />
+            </span>
+            {# </a> #}
+        </div>
+        <div class="basic_action" {% if expand %}style="display:none;"{% endif %}>
+            {{action.description|linebreaksbr|truncatewords:30}}
+        </div>
+        <div class="full_action" {% if not expand %}style="display:none;"{% endif %}>
+            {{action.description|linebreaksbr}}
+        </div>
+
+    </div><!-- action content -->
+
+    <div class="action_lines full_action" {% if not expand %}style="display:none;"{% endif %}>
+
+        <div class="pledge_line {% if not action.is_pledged %}active{% endif %}">
+
+            <div class="pledge_info">
+            {% if action.is_pledged %}
+                <b>You
+                {% if action.open_and_completed != 0 %}
+                    and {{action.open_and_completed}} other
+                    {% if action.open_and_completed == 1 %}person{% else %}people{% endif %} 
+                {% endif %}
+            {% else %}
+                {{action.open_and_completed}} 
+                {% if action.open_and_completed == 1 %}person{% else %}people{% endif %} 
+            {% endif %}
+            pledged to take this action. 
+            {% if action.is_pledged %}</b>{% endif %}
+            </div>
+
+            {% if not action.is_pledged %}
+                <form 
+                        class="pledge" 
+                        action="{% url action_pledge campaign_slug=campaign.slug,action_id=action.id %}" 
+                        method="post">
+                    <a class="submit_form" href="">Take this pledge.</a>
+                </form>
+            {% endif %}
+        </div>
+
+        <div class="done_it_line {% if action.is_pledged %}active{% endif %}">
+
+            <div class="pledge_info">
+            {% if action.is_completed %}
+                <b>You
+                {% if action.completed_count != 0 %}
+                    and {{action.completed_count}} other
+                    {% if action.completed_count == 1 %}person{% else %}people{% endif %} 
+                {% endif %}
+            {% else %}
+                {{action.completed_count}}
+                {% if action.completed_count == 1 %}person{% else %}people{% endif %} 
+            {% endif %}
+            successfully completed this action. 
+            {% if action.is_completed %}</b>{% endif %}
+            </div>
+
+            {% if action.is_pledged and not action.is_completed %}
+                <form 
+                        class="done_it" 
+                        action="{% url action_done campaign_slug=campaign.slug,action_id=action.id %}" 
+                        method="post">
+                    <a class="submit_form" href="">I've completed it!</a>
+                </form>
+            {% endif %}
+        </div>
+
+        {% if not action.is_completed %}
+            <div class="barrier_line">
+                <div class="pledge_info">{{action.barrier_count}} obstacles identified.</div>
+                <span><a class="obstacle_link" href="">I am having trouble.</a></span>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="action_body full_action" {% if not expand %}style="display:none;"{% endif %}>
+        {% include 'action/barrier_list.html' %}
+    </div>
+
+</div><!-- ends action -->

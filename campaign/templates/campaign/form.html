@@ -1,0 +1,23 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+
+{% if campaign %}
+    <form action="{% url campaign_edit campaign_id=campaign.id %}" method="post">
+{% else %}
+    <form action="{% url campaign_create %}" method="post">
+{% endif %}
+
+    <table>
+        {{form.as_table}}
+    </table>
+
+    <p>
+    {% if campaign %}
+        <input type="submit" value="Save" />
+    {% else %}
+        <input type="submit" value="Create" />
+    {% endif %}
+    </p>
+</form>
+{% endblock %}

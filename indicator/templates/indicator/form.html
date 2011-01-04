@@ -1,0 +1,29 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+<h2>{{campaign}}:
+    {% if indicator %}
+        Edit indicator
+    {% else %}
+        Create new indicator
+    {% endif %}
+</h2>
+
+{% if indicator %}
+    <form action="{% url indicator_edit indicator_id=indicator.id %}" method="post">
+{% else %}
+    <form action="{% url indicator_create campaign_id=campaign.id %}" method="post">
+{% endif %}
+
+    <table>
+        {{form}}
+    <table>
+    <p>
+        {% if indicator %}
+            <input type="submit" value="Save" />
+        {% else %}
+            <input type="submit" value="Create" />
+        {% endif %}
+    </p>
+</form>
+{% endblock %}

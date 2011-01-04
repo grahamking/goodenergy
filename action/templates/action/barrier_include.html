@@ -1,0 +1,12 @@
+<div class="barrier">
+    
+    <input  type="checkbox" 
+            name="barrier-{{barrier.id}}" 
+            {% if barrier.i_have %}checked="checked"{% endif %} />
+
+    <div class="barrier_user_count">
+        <span>{{barrier.user_count}}</span>
+        {% if barrier.user_count == 1 %}person{% else %}people{% endif %}
+    </div>
+    <span>{{barrier}}</span>
+</div>

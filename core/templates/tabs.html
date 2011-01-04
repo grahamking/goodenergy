@@ -1,0 +1,49 @@
+
+<div id="navigator">
+    <table>
+        <tr>
+        {% for indicator in indicator_list %}
+
+            {% ifequal indicator.id next.indicator.id %}
+                <td class="active">
+                    <img width="6" height="32" src="{{MEDIA_1}}images/tabs/nub-active.png" alt="" />
+                    <span>{{forloop.counter}}: {{indicator.name}}</span>
+                </td>
+            {% else %}
+                {% if indicator.position <= last_answered.position %}
+                    <td>
+                        <img width="6" height="32" src="{{MEDIA_1}}images/tabs/nub-grey.png" alt="" />
+                        <a href="{% url indicator_home campaign_slug=campaign.slug,indicator_id=indicator.id %}">
+                            {{forloop.counter}}: {{indicator.name}}
+                        </a>
+                    </td>
+                {% else %}
+                    <td>
+                        <img width="6" height="32" src="{{MEDIA_1}}images/tabs/nub-grey.png" alt="" />
+                        <span>{{forloop.counter}}: {{indicator.name}}</span>
+                    </td>
+                {% endif %}
+            {% endifequal %}
+
+        {% endfor %}
+
+        {% if next %}
+            <td class="last_tab">
+                {% if is_done %}
+                    <a id="results_link" href="{% url results campaign_slug=campaign.slug %}">
+                        Results
+                    </a>
+                {% else %}
+                    <span>Results</span>
+                {% endif %}
+            </td>
+        {% else %}
+            <td class="active last_tab">
+                <span>Results</span>
+            </td>
+        {% endif %}
+
+        </tr>
+    </table>
+</div>
+

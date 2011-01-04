@@ -1,0 +1,14 @@
+[
+    {
+        "model": "organization.Organization",
+        "pk": 1,
+        "fields": {
+            "name": "DEFAULT",
+            "slug": "default",
+            "domain": "",
+            "home_url": "/"
+        }
+    }
+]
+
+

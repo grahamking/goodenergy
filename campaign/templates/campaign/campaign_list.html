@@ -1,0 +1,43 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+
+<table>
+    <tr>
+        <th>Name</th>
+
+        <th>View</th>
+        <th>Edit</th>
+        <th>Indicators</th>
+        <th>Users</th>
+        <th>Delete</th>
+
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Default layout</th>
+        <th>Active users</th>
+    </tr>
+
+{% for campaign in campaign_list %}
+    <tr>
+        <td>{{campaign}}</a></td>
+
+        <td><a href="{{campaign.get_absolute_url}}" target="_new">View</a></td>
+        <td><a href="{% url campaign_edit campaign_id=campaign.id %}">Edit</a></td>
+        <td><a href="{% url indicator_list campaign_id=campaign.id %}">Indicators</a></td>
+        <td><a href="{% url campaign_active_users campaign_id=campaign.id %}">Users</a></td>
+        <td><a href="{% url campaign_delete campaign_id=campaign.id %}">Delete</a></td>
+
+        <td>{{campaign.start_date}}</td>
+        <td>{{campaign.end_date}}</td>
+        <td>{{campaign.default_layout}}</td>
+        <td>{{campaign.active_user_ids|length}}</td>
+    </tr>
+
+{% endfor %}
+</table>
+
+<p>
+    <a href="{% url campaign_create %}">Create new campaign</a>
+</p>
+{% endblock %}

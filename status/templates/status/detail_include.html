@@ -1,0 +1,108 @@
+
+<div id="activity-{{ activity.id }}" class="FeedEntry clearfix activity">
+    <div class="photo">
+        <a href="{{activity.owner_url}}" class="profile_link">
+            <img 
+                width="50" height="41"
+                src="{{activity.owner_thumb}}" 
+                alt="Picture of {{activity.owner_name}}" 
+                title="{{activity.owner_name}}" />
+        </a>
+    </div>
+    <p>
+        <a href="{{activity.owner_url}}" class="profile_link">
+            {{activity.owner_name}}</a> {{activity.as_html|safe}}<br/>
+    </p>  
+    {% if activity.when < one_week_ago %}
+        <div class="activity_feed_datetime">{{activity.when|date:"l jS F"}}</div>
+    {% else %}
+        <div class="activity_feed_datetime">{{activity.when|timesince}} ago</div>
+    {% endif %}
+    
+    <div class="activity_wrap">
+        <h6 class="icon comment">
+        	<a class="comment_link" href="">
+                {% if activity.comment_count %}
+                    <span class="comment_count">
+                        {{activity.comment_count}}
+                    </span> comment{{activity.comment_count|pluralize}}
+                {% else %}
+                    Add a comment <span class="comment_count" style="display:none">0</span>
+                {% endif %}
+            </a>
+        </h6>
+        <h6 class = "icon like">
+            {% if activity.i_like %}
+                <a class="like_link" 
+                    style="display:none;" 
+                    href="{% url activity_like campaign_slug=campaign.slug,object_id=activity.id %}">Like</a>
+                <a class="unlike_link" 
+                    href="{% url activity_unlike campaign_slug=campaign.slug,object_id=activity.id %}">Unlike</a>
+            {% else %}
+                <a class="like_link" 
+                    href="{% url activity_like campaign_slug=campaign.slug,object_id=activity.id %}">Like</a>
+                <a class="unlike_link" 
+                    style="display:none;" 
+                    href="{% url activity_unlike campaign_slug=campaign.slug,object_id=activity.id %}">Unlike</a>
+            {% endif %}
+        </h6>
+    </div>
+    
+    <div class="like_this" {% if not activity.is_liked %}style="display:none;"{% endif %}>
+        <div class="i_like icon like" 
+                {% if not activity.i_like %}style="display:none;"{% endif %}>
+            {% spaceless %}
+            You
+            {% for user in activity.others_who_like %}
+                {% if forloop.last %}and{% else %}, {% endif %}
+                <a href="{{user.get_absolute_url}}"
+                    class="profile_link">{{user}}</a>
+            {% endfor %}
+            like this.
+            {% endspaceless %}
+        </div>			
+        <div class="i_unlike icon like" 
+            {% if activity.i_like %}style="display:none;"{% endif %}>
+            {% if activity.others_who_like %}
+                {% for user in activity.others_who_like %}
+                    {% if not forloop.first %}
+                        {% if forloop.last %} and {% else %}, {% endif %}
+                    {% endif %}
+                    <a href="{{user.get_absolute_url}}"
+                        class="profile_link">{{user}}</a>
+                {% endfor %}like this.
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="comments" {% if not activity.all_comments %}style="display:none;"{% endif %}>
+
+        {% for comment in activity.all_comments %}
+            {% include 'status/comment_include.html' %}
+        {% endfor %}
+
+        <div class="FeedEntry clearfix">
+           <div class="photo photo_last_comment">
+                <a href="{{geuser.get_absolute_url}}" class="profile_link">
+                    <img src="{{geuser.thumb_url}}" 
+                        width="37" height="30"
+                        alt="Picture of {{geuser}}" title="{{geuser}}" />
+                </a>
+            </div>
+            <div>
+                <form   
+                        class="comment_form" 
+                        action="{% url activity_comment campaign_slug=campaign.slug,object_id=activity.id %}" 
+                        method="post">
+                    <textarea 
+                        name="comment" 
+                        class="clear_field inactive" 
+                        rows="1" 
+                        cols="10">Write a comment...</textarea>
+                    <input type="submit" value="Share" class="comment_submit" />
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div><!-- ends feed entry -->

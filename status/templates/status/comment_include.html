@@ -1,0 +1,34 @@
+<div class="FeedEntry clearfix {commentId: {{comment.id}}}">
+    <div class="commentphoto photo">
+        <a  href="{{comment.user.get_absolute_url}}" 
+            class="profile_link" 
+            rel="user-{{comment.user.id}}">
+
+            <img src="{{comment.user.thumb_url}}" 
+                width="37" height="30"
+                alt="Picture of {{comment.user}}" 
+                title="{{comment.user}}" />
+        </a>
+    </div>
+    <p>
+        <a href="{{comment.user.get_absolute_url}}" 
+            class="profile_link" 
+            rel="user-{{comment.user.id}}">
+            {{comment.user}}</a>
+        {{comment.comment|urlize}}<br />
+        <div class="activity_feed_datetime">
+            {% if comment.created < one_week_ago %}
+                <span>{{comment.created|date:"l jS F"}}</span>
+            {% else %}
+                <span>{{comment.created|timesince}} ago</span>
+            {% endif %}
+            {% if comment.user.id == geuser.id %}
+            . <a    class="delete_comment" 
+                    href="{% url activity_comment_delete campaign_slug=campaign.slug,object_id=comment.id %}">
+                Delete
+            </a>
+            {% endif %}
+        </div>
+    </p>
+</div>
+

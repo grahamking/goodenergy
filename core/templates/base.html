@@ -1,0 +1,94 @@
+{% load smartif %}
+{% load compressed %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script> {# chartbeat #}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{organization.name}} {% block title %}{% endblock %}</title>
+
+<meta name="title" content="{{organization.name}} - {{campaign.name}}" />
+{% if campaign.invite_message %}
+    <meta name="description" content="{{campaign.get_invite_message}}" />
+{% endif %}
+
+{% if organization.favicon %}
+    <link rel="shortcut icon" href="{{ organization.favicon.url }}" type="image/x-icon" />
+{% else %}
+    <link rel="shortcut icon" href="/media/images/favicon.ico" type="image/x-icon" />
+{% endif %}
+
+<link rel="stylesheet" type="text/css" href="{{MEDIA_1}}css/yui-2.6.0-reset-fonts.css" />
+<link rel="stylesheet" type="text/css" href="{{MEDIA_2}}css/960.css" />
+{% compressed_css 'all' %}
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/media/css/ie7.css" /><![endif]-->
+
+{% if organization.css %}
+    <link rel="stylesheet" type="text/css" href="{{organization.css.url}}" />
+{% endif %}
+
+{% block extrahead %}	
+{% endblock %}
+
+</head>
+
+<body>
+    <div id="tooltip_container">&nbsp;</div>
+{% if organization.has_custom_header %}
+    {{organization.header|safe}}
+{% else %}
+    <div id="header">
+        <div class="width clearfix">
+            <h1>
+                <a href="{{organization.home}}">
+                    {% if organization.logo %}
+                        <img src="{{MEDIA_1}}{{organization.logo}}" alt="{{organization.name}} Logo" />
+                    {% else %}
+                    <img src="{{MEDIA_1}}images/logos/good_energy_small.png" 
+                        alt="Good Energy Logo" 
+                        title="Good Energy - Change from within" />
+                    {% endif %}
+                </a>
+            </h1>
+
+            {% if request.user.is_authenticated %}
+                {% block headerlinks %}
+                    {% include 'header_links_include.html' %}
+                {% endblock %}
+            {% endif %}
+        </div>
+    </div> <!-- ends header -->
+{% endif %}
+
+<div id="outer_container">
+    {% if organization.has_custom_header %}
+        {% include 'header_links_include.html' %}
+    {% endif %}
+    {% block outer_content %}
+        <div id="container" class="container_12 clearfix">
+            {% block content %}{% endblock %}
+        </div><!-- ends container -->
+    {% endblock %}
+</div>
+
+{% if organization.has_custom_footer %}
+    {{organization.footer|safe}}
+{% else %}
+    <div id="footer">
+        <div class="width clearfix">
+            <ul>
+                <li><a href="/contact/">Contact Us</a></li>
+            </ul>
+        
+            <p>© 2010 Good Energy Research Inc.</p>
+        </div><!-- ends footer -->
+    </div>
+{% endif %}
+
+{# <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script> #}
+<script src="{{MEDIA_1}}js/jquery.min.js" type="text/javascript"></script>
+{% block scripts %}{% endblock %}
+
+</body>
+
+</html>

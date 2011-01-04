@@ -1,0 +1,15 @@
+[
+    {
+        "model": "campaign.Campaign",
+        "pk": 1,
+        "fields": {
+            "name": "Sample",
+            "slug": "sample",
+            "start_date": "1970-01-01",
+            "end_date": "1970-02-05",
+            "organization": 1,
+            "is_default": true,
+            "is_fixed_dates": false
+        }
+    }
+]

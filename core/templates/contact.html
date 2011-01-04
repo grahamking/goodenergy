@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %} : {{title}}{% endblock %}
+
+{% block content %}
+
+	<div id="contact" class="container_12">
+
+		<div class="grid_6">
+			<h1>{{title}}</h1>
+			<form action="{{ app_path }}" method="post" id="login-form">
+				<fieldset>
+					<h2>Your Name</h2>
+					{{ form.name }}
+					<span class="error">
+						{% for err in form.name.errors %}
+							{{err}}{% if not forloop.last %}, {% endif %}
+						{% endfor %}
+						</span>
+						
+					<h2>Your Email</h2>
+					{{ form.email }}
+					<span class="error">
+						{% for err in form.email.errors %}
+							{{err}}{% if not forloop.last %}, {% endif %}
+						{% endfor %}
+					</span>
+					
+					<h2>Your Message</h2>
+					{{ form.message }}
+					<span class="error">
+						{% for err in form.message.errors %}
+							{{err}}{% if not forloop.last %}, {% endif %}
+						{% endfor %}
+						{% for err in form.non_field_errors %}
+							{{err}}{% if not forloop.last %}, {% endif %}
+						{% endfor %}
+					</span>
+				</fieldset>
+				
+				<input type="submit" value="Send"/>
+		
+			</form>
+						
+		</div>
+
+	</div>
+
+{% endblock %}

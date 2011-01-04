@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+{% load goodenergy %}
+{% load compressed %}
+{% load humanize %}
+
+{% block title %} - Results{% endblock %}
+
+{% block outer_content %}
+
+<div id="UserInfo" class="clearfix module">
+
+    {% if not completed %}
+        {% include 'tabs.html' %}
+    {% endif %}
+
+    <div class="container_12 clearfix">
+
+        {% if completed %} 
+            <div id="completed" class="grid_12 omega">
+                <h1>{{campaign}}: Congratulations, you completed the campaign!</h1>
+                <ul>
+                    {% with campaign.stats as stats %}
+                        <li>{{stats.num_users}} users tracked their 
+                            behavior {{stats.num_answers|intcomma}} times</li>
+                        <li>{{stats.num_pledges}} pledges were taken</li>
+                        <li>{{stats.num_ideas}} ideas were generated</li>
+                    {% endwith %}
+                </ul>
+                <h2>Your stats</h2>
+                <ul class="my_stats">
+                    <li>{{my_stats.num_answers}} answer{{my_stats.num_answers|pluralize}}</li>
+                    {% if my_stats.num_pledges %}
+                        <li>{{my_stats.num_pledges}} pledge{{my_stats.num_pledges|pluralize}}</li>
+                    {% endif %}
+                    {% if my_stats.num_ideas %}
+                        <li>{{my_stats.num_ideas}} idea{{my_stats.num_ideas|pluralize}}</li>
+                    {% endif %}
+                </ul>
+                {% if my_stats.completed_pledges %}
+                    <h3>You completed these pledges</h3>
+                    <ul class="my_stats">
+                        {% for pledge in my_stats.completed_pledges %}
+                            <li>{{pledge.action}}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if my_stats.pending_pledges %}
+                    <h3>You still have these pledges to complete</h3>
+                    <ul class="my_stats">
+                        {% for pledge in my_stats.pending_pledges %}
+                        <li>{{pledge.action}}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div id="user_info_center" class="grid_12 omega">
+
+            <div id="result-container">
+
+                <div id="result-nav" class="grid_4 alpha">
+                    <div class="title clearfix">
+                        {% if completed %}
+                            <h3>Your Campaign Results</h3>
+                        {% else %}
+                            <h3>How You're Doing Overall</h3>
+                        {% endif %}
+                    </div>
+  
+                    {% if indicator_rating_above %}
+                        <div class="rating_module">
+                            <img src="/media/images/arrow_up_24.png" alt="arrow up" />
+                            <h4 class="ok">You're above average on:</h4>
+                            <div class="rating_body">
+                                {% for indicator in indicator_rating_above %}
+                                    {{indicator.name}} 
+                                    (+{{indicator.user_rating_exact|floatformat:0}}%){% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                    	<div class = "rating_module">
+                            <img src="/media/images/arrow_up_24.png" alt="arrow up" />
+                            <h4 class="ok">You're above average on:</h4>
+                            <span class = "results_nothing">Nothing.</span>
+                        </div>
+                    {% endif %}
+
+                    {% if indicator_rating_avg %}
+                        <div class="rating_module">
+                            <h4>You're average on:</h4>                
+                            <div class="rating_body">
+                                {% for indicator in indicator_rating_avg %}
+                                    {{indicator.name}}{% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="rating_module">
+                            <h4>You're average on:</h4>
+                            <span class = "results_nothing">Nothing.</span>
+                        </div>
+                    {% endif %}
+                    
+                    {% if indicator_rating_below %}
+                        <div class="rating_module">
+                            <img src="/media/images/arrow_down_24.png" alt="arrow down" />
+                            <h4 class="wrong">You're below average on:</h4>
+                            <div class="rating_body">
+                                {% for indicator in indicator_rating_below %}
+                                    {{indicator.name}} 
+                                    (-{{indicator.user_rating_exact|floatformat:0}}%){% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                       <div class = "rating_module">
+                           <img src="/media/images/arrow_down_24.png" alt="arrow down" />
+                           <h4 class="wrong">You're below average on:</h4>
+                           <span class = "results_nothing">Nothing.</span>
+                       </div>
+                    {% endif %}
+
+                    {% comment %}
+                    <ul>
+                    {% for indicator in indicator_rating_list %}
+                        {% ifequal indicator.id current_indicator.id %}
+                            <li class="active" title="{{indicator.question}}"> 
+                                {# <img id="result-nub" src="/media/images/backgrounds/result_nub.png" alt="" height="22"/> #}
+                                <span>{{indicator.name}}</span>
+                        {% else %}
+                            <li title="{{indicator.question}}"
+                                class="{% if indicator.user_rating > 0 %}ok{% endif %}
+                                    {% if indicator.user_rating < 0 %}wrong{% endif %}"> 
+
+                                <a href="{% url results_specific campaign_slug=campaign.slug,indicator_id=indicator.id %}" 
+                                   id="show-{{indicator.id}}">
+                                        {{indicator.name}}
+                                </a>
+                        {% endifequal %}
+
+                        {% if indicator.user_rating > 0 %}
+                            {{indicator.user_rating_exact|floatformat:0}}%
+                            above average
+                        {% endif %}
+                        {% if indicator.user_rating == 0 %}
+                            About Average
+                        {% endif %}
+                        {% if indicator.user_rating < 0 %}
+                            {{indicator.user_rating_exact|floatformat:0}}%
+                            below average
+                        {% endif %}
+
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    {% endcomment %}
+                </div>
+
+                <div id="graph-container" class="grid_8 alpha omega">
+                
+                    <div class="title clearfix">
+                        <div id="graph-compare-title" class="header">Compare</div>
+                        <form id="graph-compare-who" class="header" action="" method="get">
+                            {% if my_groups %}
+                                <select name="from">
+                                    <option value="me" 
+                                        {% ifequal from_user geuser %}selected="yes"{% endifequal %}>
+                                        Me
+                                    </option>
+                                    {% for group in my_groups %}
+                                        <option value="{{group.id}}"
+                                                {% if from_user.id != geuser.id and from_user.id == group.id %}
+                                                    selected="yes"
+                                                {% endif %}>
+                                            {{group}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                                Me
+                            {% endif %}
+                            to
+                            {% if all_groups %}
+                                <select name="to">
+                                    <option value="all"
+                                        {% if is_compare_to_all %}selected="selected"{% endif %}>
+                                        Everyone
+                                    </option>
+                                    {% for group in all_groups %}
+                                        <option value="{{group.id}}"
+                                                {% if not is_compare_to_all and to_user.id == group.id %}
+                                                    selected="yes"
+                                                {% endif %}>
+                                            {{group}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                                Everyone
+                            {% endif %}
+                            on
+                            <select name="indicator_id">
+                                <option value="{{overall_indicator.id}}">Overall</option>
+                                {% for indicator in indicator_list %}
+                                    <option value="{{indicator.id}}" 
+                                            {% if indicator.id == current_indicator.id %}selected="selected"{% endif %}>
+                                        {{indicator.name}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+
+                            <input type="submit" value="Compare" />
+                        </form>
+
+                    </div>
+
+                    {% comment %}
+                    <div id="graph-buttons-container">
+                        <div id="time_buttons" class="graph_buttons">
+                            <a id="time_campaign" class="active" href="">Campaign</a>
+                            <a id="time_month" href="">Month</a>
+                        </div>
+                        <div id="precise_average" class="graph_buttons">
+                            <a id="show_precise_graph" href="" class="second">Precise</a>
+                            <a id="show_average_graph" href="" class="active first">Average</a>
+                        </div>
+                    </div>
+                    {% endcomment %}
+                
+                    <div id="legend">
+                        <div class="legend_unit">
+                            <div class="dot from_color"></div>
+                            {% ifequal from_user geuser %}Me
+                            {% else %}{{from_user}}
+                            {% endifequal %}
+                        </div>
+                        <div class="legend_unit">
+                            <div class="dot to_color"></div>
+                            {{to_user}}
+                        </div>
+                    </div>
+
+                    <div id="graph" style="width:98%; height:200px;"></div>
+
+                    {% comment %}
+                    <p>
+                        {% if current_indicator == overall_indicator %}
+                            Average results over all questions
+                        {% else %}
+                            The question was: <i>{{current_indicator.question}}</i>
+                        {% endif %}
+                    </p>
+                    {% endcomment %}
+
+                </div> {# end graph-container #}
+            </div> 
+
+        </div> {# end user_info_center #}
+
+    </div> {# end container_12 #}
+
+</div><!-- ends User Info -->
+
+{% if completed %}
+    <div id="completed_people" class="container_12 clearfix">
+        <div class="grid_12">
+            {% if 'fresh' in request.get_full_path %}
+                {% for user in campaign.users.all.select_related %}
+                    <img 
+                        width="50" height="41"
+                        src="{{user.thumb_url}}" alt="Picture of {{user}}" title="{{user}}" />
+                {% endfor %}
+            {% else %}
+                {% if campaign.user_wall %}
+                    <h2>All the participants</h2>
+                    <img src="{{campaign.user_wall.url}}" alt="Picture of everyone" />
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    {% include 'dashboard_bottom.html' %}
+{% endif %}
+
+</div> <!-- outer_container -->
+
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+
+<script type="text/javascript">
+    var GOODENERGY = {};
+    GOODENERGY.DATA = {
+	    isDone: true,
+        hasGraph: true, 
+        graph: { start_date: {{campaign_start_date|js_utc}}, end_date: {{campaign_end_date|js_utc}} },
+        indicator: {{indicator_json|safe}},
+        currentUserId: {{geuser.id}},
+        campaignSlug: '{{campaign.slug}}',
+        hasPic: true,
+        isNewUser: false
+    };
+</script>
+
+<!--[if IE]><script language="javascript" type="text/javascript" src="/media/js/excanvas.min.js"></script><![endif]-->
+{% compressed_js 'all' %}
+
+{% endblock %}

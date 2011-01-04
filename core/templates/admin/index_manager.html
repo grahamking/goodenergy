@@ -1,0 +1,271 @@
+{% extends "admin/base_site.html" %}
+{% load compressed %}
+{% load i18n %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+{# Campaigns #}
+<div class="module">
+    <table class="module">
+        <caption>
+            <a href="/manager/campaign/campaign/" class="section">Campaigns</a>
+        </caption>
+        <tr>
+            <th scope="row"></th>
+            <td>
+                <a href="/manager/campaign/campaign/add/" class="addlink">
+                    Add
+                </a>
+            </td>
+        </tr>
+        {% for campaign in campaign_list %}
+            <tr>
+                <th scope="row">
+                    <a href="/manager/campaign/campaign/{{campaign.id}}">
+                        {{campaign}}
+                    </a>
+                    <ul>
+                        {% with campaign.stats as stats %}
+                            <li>Users: {{stats.num_users}}</li>
+                            <li>Answers: {{stats.num_answers}}</li>
+                            <li>Answers per user: {{stats.answers_per_user}}</li>
+                            <li>Pledges: {{stats.num_pledges}} taken, 
+                                {{stats.num_pledges_completed}} completed
+                                ({{stats.pledges_completed_pct|floatformat:0}}%)
+                            </li>
+                            <li>Ideas: {{stats.num_ideas}}</li>
+                        {% endwith %}
+                    </ul>
+                </th>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{# Indicators #}
+{% for campaign in campaign_list %}
+    <div class="module">
+        <table class="module">
+            <caption>Indicators for {{campaign}}</caption>
+            <tr>
+                <th scope="row"></th>
+                <td>
+                    <a href="/manager/indicator/" class="addlink">
+                        Add
+                    </a>
+                </td>
+            </tr>
+            {% for indicator in campaign.indicators %}
+                <tr>
+                    <th scope="row">
+                        <a href="{{indicator.get_manager_url}}">
+                            {{indicator}}
+                        </a>
+                    </th>
+                    <td>
+                        {% with indicator.num_answers as count %}
+                            {{count}} answer{{count|pluralize}}
+                        {% endwith %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endfor %}
+
+{# Users #}
+<div class="module">
+    <table class="module">
+        <caption>
+            <a href="/manager/profile/profile/" class="section">Users</a>
+        </caption>
+        <tr>
+            <th scope="row">
+                <a href="/manager/profile/profile/">
+                    All Users
+                </a>
+            </th>
+            <td></td>
+        </tr>
+    </table>
+</div>
+
+{# Actions #}
+<div class="module">
+    <table class="module">
+        <caption>
+            <a href="/manager/action/action/" class="section">Take Action</a>
+        </caption>
+        {% for action in action_list %}
+            <tr>
+                <th scope="row">
+                    <a href="/manager/action/action/{{action.id}}">
+                        {{action}}
+                    </a>
+                </th>
+                <td>
+                    {% with action.pledge_count as count %}
+                        {{count}} pledge{{count|pluralize}}
+                    {% endwith %}
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <th scope="row">
+                <a href="/manager/action/action/">All actions</a>
+            </th>
+            <td></td>
+        </tr>
+    </table>
+</div>
+        
+{# Entries #}
+<div class="module">
+    <table class="module">
+        <caption>
+            <a href="/manager/status/entry/" class="section">Share Ideas</a>
+        </caption>
+        {% for entry in entry_list %}
+            <tr>
+                <th scope="row">
+                    <a href="/manager/status/entry/{{entry.id}}">
+                        {{entry.msg}}
+                    </a>
+                </th>
+                <td>{{entry.who}}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <th scope="row">
+                <a href="/manager/status/entry/">All ideas</a>
+            </th>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a href="{% url activity_clear_cache campaign_slug=campaign.slug %}">
+                    Clear ideas cache
+                </a>
+            </th>
+            <td></td>
+        </tr>
+    </table>
+</div>
+
+
+{# Data export #}
+{% comment %}
+<div class="module">
+    <table class="module">
+        <caption>
+            Data export (CSV files)
+        </caption>
+        <tr>
+            <th scope="row">
+                <a href="{% url users_csv %}">Users</a>
+            </th>
+            <td>All</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a href="{% url campaigns_csv %}">Campaigns</a>
+            </th>
+            <td>All</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a href="{% url indicators_csv %}">Indicators</a>
+            </th>
+            <td>All</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a href="{% url answers_csv %}">Answers</a>
+            </th>
+            <td>Last 30 days</td>
+        </tr>
+    </table>
+</div>
+{% endcomment %}
+
+{% comment %}
+{% if app_list %}
+    {% for app in app_list %}
+        <div class="module">
+        <table summary="{% blocktrans with app.name as name %}Models available in the {{ name }} application.{% endblocktrans %}">
+        <caption><a href="{{ app.app_url }}" class="section">{% blocktrans with app.name as name %}{{ name }}{% endblocktrans %}</a></caption>
+        {% for model in app.models %}
+            <tr>
+            {% if model.perms.change %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+            {% else %}
+                <th scope="row">{{ model.name }}</th>
+            {% endif %}
+
+            {% if model.perms.add %}
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.perms.change %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+        {% endfor %}
+        </table>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>{% trans "You don't have permission to edit anything." %}</p>
+{% endif %}
+{% endcomment %}
+
+</div>
+
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% trans 'Recent Actions' %}</h2>
+        <h3>{% trans 'My Actions' %}</h3>
+            {% load log %}
+            {% get_admin_log 10 as admin_log for_user user %}
+            {% if not admin_log %}
+            <p>{% trans 'None available' %}</p>
+            {% else %}
+            <ul class="actionlist">
+            {% for entry in admin_log %}
+            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                {% if entry.is_deletion %}
+                    {{ entry.object_repr }}
+                {% else %}
+                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                {% endif %}
+                <br/>
+                {% if entry.content_type %}
+                    <span class="mini quiet">{% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %}</span>
+                {% else %}
+                    <span class="mini quiet">{% trans 'Unknown content' %}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}
+

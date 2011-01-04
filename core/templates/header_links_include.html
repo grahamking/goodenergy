@@ -1,0 +1,63 @@
+{% if geuser %}
+<div id="header_links_container" class="container_12 clearfix">
+
+    <div id="welcome">
+        Hi 
+        {% if user and user.id == geuser.id %}
+            {{geuser.user.first_name}}!
+        {% else %}
+            <a id="top_profile_link" href="{{ geuser.get_absolute_url }}" class="profile_link">
+                {{geuser.user.first_name}}</a>!
+        {% endif %}
+        You have 
+        <span title="You get one point for each question you answer, and five points for inviting others to join you.">
+            {{geuser.participation_points}} point{{geuser.participation_points|pluralize}}
+        </span>
+        {% if campaign %}
+            and there are 
+            <span title="Number of active people taking part in this campaign.">
+                {{campaign.num_users}} participants.
+            </span>
+        {% endif %}
+    </div>
+
+    <ul id="header_links_body">
+        {% if 'users' in request.get_full_path %}
+            <li><a href="{{campaign.get_absolute_url}}">Home</a></li>
+            <li class="active">Profile</li>
+        {% else %}
+            <li class="active">Home</li>
+            <li><a href="{{geuser.get_absolute_url}}">Profile</a></li>
+        {% endif %}
+        {% if campaign.invite_message %}
+            <li>
+                <a id="invite" href="{% url profile_invite campaign_slug=campaign.slug %}">
+                    Earn Extra Points
+                </a>
+            </li>
+        {% endif %}
+        {% if campaign %}
+        <li>
+            <a id="settings" href="{% url profile_settings campaign_slug=campaign.slug %}">
+                Settings
+            </a>
+        </li>
+        <li>
+            <a href="{% url registration_logout campaign_slug=campaign.slug %}">
+                Log Out
+            </a>
+        </li>
+        {% endif %}
+        <li id="ge_link">
+            <a href="http://www.goodenergy.ca">
+                <img width="70" height="15" 
+                    src="{{MEDIA_2}}images/GE_logo_DSF.png" 
+                    title="Powered by Good Energy"
+                    alt="Powered by Good Energy" />
+            </a>
+        </li>
+    </ul>
+
+
+</div> {# container_12 #} 
+{% endif %}

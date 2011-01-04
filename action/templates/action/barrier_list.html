@@ -1,0 +1,20 @@
+    <form 
+            action="{% url action_barriers campaign_slug=campaign.slug,action_id=action.id %}" 
+            method="post" 
+            class="barriers action_tab" 
+            {% if not expand_barriers %}style="display:none;"{% endif %}>
+        
+        <div class="barrier">
+           <strong>I can't complete this action because (tick all that apply):</strong>
+        </div>
+        {% for barrier in action.barriers %}
+            {% include 'action/barrier_include.html' %}
+        {% endfor %}
+        <div class="barrier">
+            <input type="checkbox" name="barrier-new" value="other" />
+            Other: <input type="text" class="other_barrier" name="new_barrier_text" maxlength="55"/>
+        </div>
+        <div class="barrier">
+            <input type="submit" value="Save" />
+        </div>
+    </form>

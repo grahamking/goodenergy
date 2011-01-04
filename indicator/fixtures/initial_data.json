@@ -1,0 +1,150 @@
+[
+    {
+        "model": "indicator.Indicator",
+        "pk": 1,
+        "fields": {
+            "campaign": 1,
+            "position": 1,
+            "name": "teeth",
+            "question": "Since last week, did you brush your teeth daily?",
+            "description": "Sample description 1"
+        }
+    },
+
+    {
+        "model": "indicator.Indicator",
+        "pk": 2,
+        "fields": {
+            "campaign": 1,
+            "position": 2,
+            "name": "vegetables",
+            "question": "Since last week, did you eat your vegetables?",
+            "description": "Sample description 2"
+        }
+    },
+
+    {
+        "model": "indicator.IndicatorLikert",
+        "pk": 1,
+        "fields": {}
+    },
+    {
+        "model": "indicator.IndicatorLikert",
+        "pk": 2,
+        "fields": {}
+    },
+
+    {
+        "model": "indicator.Indicator",
+        "pk": 3,
+        "fields": {
+            "campaign": 1,
+            "name": "OVERALL",
+            "question": "OVERALL",
+            "is_synthetic": true,
+            "description": ""
+        }
+    },
+
+    {
+        "model": "indicator.IndicatorNumber",
+        "pk": 3,
+        "fields": {
+            "number_range_start": 1,
+            "number_range_end": 100
+        }
+    },
+
+    {
+        "model": "indicator.Option",
+        "pk": 1,
+        "fields": {
+            "indicator": 1,
+            "value": "Never",
+            "position": 1
+        }
+    },
+    {
+        "model": "indicator.Option",
+        "pk": 2,
+        "fields": {
+            "indicator": 1,
+            "value": "Rarely",
+            "position": 2
+        }
+    },
+    {
+        "model": "indicator.Option",
+        "pk": 3,
+        "fields": {
+            "indicator": 1,
+            "value": "Sometimes",
+            "position": 3
+        }
+    },
+    {
+        "model": "indicator.Option",
+        "pk": 4,
+        "fields": {
+            "indicator": 1,
+            "value": "Often",
+            "position": 4
+        }
+    },
+    {
+        "model": "indicator.Option",
+        "pk": 5,
+        "fields": {
+            "indicator": 1,
+            "value": "Always",
+            "position": 5
+        }
+    },
+
+    {
+        "model": "indicator.Option",
+        "pk": 6,
+        "fields": {
+            "indicator": 2,
+            "value": "Never",
+            "position": 1
+        }
+    },
+    {
+        "model": "indicator.Option",
+        "pk": 7,
+        "fields": {
+            "indicator": 2,
+            "value": "Rarely",
+            "position": 2
+        }
+    },
+    {
+        "model": "indicator.Option",
+        "pk": 8,
+        "fields": {
+            "indicator": 2,
+            "value": "Sometimes",
+            "position": 3
+        }
+    },
+    {
+        "model": "indicator.Option",
+        "pk": 9,
+        "fields": {
+            "indicator": 2,
+            "value": "Often",
+            "position": 4
+        }
+    },
+    {
+        "model": "indicator.Option",
+        "pk": 10,
+        "fields": {
+            "indicator": 2,
+            "value": "Always",
+            "position": 5
+        }
+    }
+
+]

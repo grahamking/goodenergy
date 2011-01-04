@@ -1,0 +1,134 @@
+
+<form 
+    id="settings_form" 
+    action="{% url profile_settings campaign_slug=campaign.slug %}{% if 'survey' in request.get_full_path %}?survey=1{% endif %}" 
+    method="post">
+    
+    <table {% if 'survey' in request.get_full_path %}style="display:none"{% endif %}>
+        <tr>
+            <th>{{form.first_name.label_tag}}</th>
+            <td>
+                {{form.first_name}}
+                <span class="wrong">
+                    {% for err in form.first_name.errors %}<br/>{{err}}{% endfor %}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>{{form.last_name.label_tag}}</th>
+            <td>
+                {{form.last_name}}
+                <span class="wrong">
+                    {% for err in form.last_name.errors %}<br/>{{err}}{% endfor %}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>{{form.email.label_tag}}</th>
+            <td>
+                {{form.email}}
+                <span class="wrong">
+                    {% for err in form.email.errors %}<br/>{{err}}{% endfor %}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>{{form.timezone.label_tag}}</th>
+            <td>{{form.timezone}}<br/>
+                <span class="wrong">
+                    {% for err in form.timezone.errors %}{{ err }}<br/>{% endfor %}
+                </span>
+            </td>
+        </tr>
+        {% if form.has_groups %}
+            <tr>
+                <th>{{form.groups.label_tag}}</th>
+                <td>{{form.groups}}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td colspan="2">
+                <a href="{% url profile_crop campaign_slug=campaign.slug %}">Edit Profile Picture</a>
+            </td>
+        </tr>
+    </table>
+
+    {% if 'survey' in request.get_full_path %}
+        <h2>Please help our research by providing the following information:</h2>
+    {% else %}
+        <h2>Optional</h2>
+    {% endif %}
+    <table>
+        {% comment %}
+        <tr>
+            <th>{{form.gender.label_tag}}</th>
+            <td>{{form.gender}}<br/>
+                <span class="wrong">
+                    {% for err in form.gender.errors %}{{ err }}<br/>{% endfor %}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>{{form.birthday.label_tag}}</th>
+            <td>{{form.birthday}}<br/>
+                <span class="wrong">
+                    {% for err in form.birthday.errors %}{{ err }}<br/>{% endfor %}
+                </span>
+                <small>Example: 1971-04-30 (yyyy-mm-dd)</small>
+            </td>
+        </tr>
+        {% endcomment %}
+        <tr>
+            <th>{{form.employer.label_tag}}</th>
+            <td>{{form.employer}}</td>
+        </tr>
+        <tr>
+            <th style="padding-top:0"></th>
+            <td style="padding-top:0">
+                <small>Name of the company you work for.<br/> 
+                    Leave blank if not applicable</small>
+            </td>
+        </tr>
+        {% comment %}
+        <tr>
+            <th>{{form.job_title.label_tag}}</th>
+            <td>{{form.job_title}}</td>
+        </tr>
+        {% endcomment %}
+        <tr>
+            <th>{{form.postal_code.label_tag}}</th>
+            <td>{{form.postal_code}}</td>
+        </tr>
+        <tr>
+            <th style="padding-top:0"></th>
+            <td style="padding-top:0">
+                <small>City / Town where you work</small>
+            </td>
+        </tr>
+    </table>
+
+    {% if 'survey' in request.get_full_path %}
+        <input type="submit" value="Continue" />
+        <button type="submit" class="link">Skip this step</button>
+    {% else %}
+        <input type="submit" value="Save" />
+    {% endif %}
+
+</form>
+
+{% comment %}
+{% block scripts %}
+{{block.super}}
+<script type="text/javascript">
+$(function(){ 
+            
+    $('#id_birthday').datepicker({ 
+        dateFormat: 'yy-mm-dd',
+        changeMonth: true,
+        changeYear: true,
+        defaultDate: '1970-01-01'
+    });
+});
+</script>
+{% endblock %}
+{% endcomment %}

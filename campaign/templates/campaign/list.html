@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} - Select Campaign{% endblock title %}
+
+{# No campaign yet, so can't display user's profile link #}
+{% block headerlinks %}{% endblock headerlinks %}
+
+{% block content %}
+<div id="campaign_select">
+    <h1>Select a Campaign</h1>
+
+    <p>Here are the campaigns running currently. 
+    Each campaign starts the day you join it, and runs for 5 weeks.
+    </p>
+
+    <ul>
+    {% for campaign in organization.campaign_set.all %}
+    <li>
+        <h2>{{campaign}}</h2>
+        {% if campaign.promo_html %}
+            {{campaign.promo_html|safe}}
+        {% endif %}
+        <a href="{{campaign.get_absolute_url}}"><button>Join {{campaign}}</button></a>
+    </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

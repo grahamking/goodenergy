@@ -1,0 +1,12 @@
+@charset "UTF-8";
+input[type="submit"] { padding: 0; }
+#navigator td img { display: none; }
+#navigator td { border-right: 2px solid white; }
+#navigator td.last_tab { border-right: none; }
+#navigator td a, #navigator td span { margin-top: 3px; }
+
+.ui-widget { font-size: 11px; }
+
+#graph-compare-who input[type="submit"] { font-size: 85%; }
+#graph-compare-title { margin-top: 2px; }
+#graph { margin-top: 0; }

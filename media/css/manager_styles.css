@@ -1,0 +1,88 @@
+
+/* base styles,from YUI base.css =====================*/
+h1 {
+	font-size:138.5%;
+}
+h2 {
+	font-size:123.1%;
+}
+h3 {
+	font-size:108%;
+}
+h1,h2,h3 {
+	margin:1em 0;
+}
+h1,h2,h3,h4,h5,h6,strong,dt {
+	font-weight:bold;
+}
+dl,ol,ul.sane {
+	margin:1em;
+	margin-left:2em;
+	text-align: left;
+}
+ol li {
+	list-style:decimal outside;
+}
+ul.sane li {
+	list-style:disc outside;	
+}
+dl dd {
+	margin-left:1em;
+}
+th,td {
+	border:1px solid #000;
+	padding:.5em;
+}
+th {
+	font-weight:bold;
+	text-align:center;
+}
+fieldset,table,pre {
+	margin-bottom: 1em;
+}
+
+/* Container ========================= */
+#container {
+	clear:both;
+	padding-bottom: 20px;
+}
+.width {
+	width:940px;
+	margin:0 auto;
+}
+#content {
+    clear: both;
+}
+
+/* Header ========================= */
+#header {
+	clear:both;
+	background:#f7f7f7 url(/media/images/backgrounds/bg_header_blue.png) repeat-x bottom left;
+	padding-top:10px;
+}
+#header h1 {
+	float:left;
+	margin:0 0 10px;
+	padding:0;
+	width:220px;
+	height:36px;
+}
+#header_links {
+	float:right;
+}
+#header_links li {
+	float:left;
+	margin-left:10px;
+	height:36px;
+	line-height:36px;
+}
+
+/* Navigation ===================== */
+
+#nav {
+    font-size: 132%;
+}
+#nav li {
+    float: left;
+    padding: 10px;
+}

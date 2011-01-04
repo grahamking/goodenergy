@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% load smartif %}
+
+{% block title %}Crop Profile Picture{% endblock %}
+
+{% block extrahead %}
+<style type="text/css" media="all">
+
+body
+{
+	background: #fff;
+	margin: 0;
+	padding: 0;
+}
+
+#resizeMe
+{
+	position: absolute;
+	width: {{start_width}}px;
+	height: {{start_height}}px;
+	cursor: move;
+	background-image: url({{crop_img}});
+	background-repeat: no-repeat;
+}
+#resizeSE,
+#resizeE,
+#resizeNE,
+#resizeN,
+#resizeNW,
+#resizeW,
+#resizeSW,
+#resizeS
+{
+	position: absolute;
+	width: 8px;
+	height: 8px;
+	background-color: #333;
+	border: 1px solid #fff;
+	overflow: hidden;
+}
+#resizeSE{
+	bottom: -10px;
+	right: -10px;
+	cursor: se-resize;
+}
+#resizeE
+{
+	top: 50%;
+	right: -10px;
+	margin-top: -5px;
+	cursor: e-resize;
+}
+#resizeNE
+{
+	top: -10px;
+	right: -10px;
+	cursor: ne-resize;
+}
+#resizeN
+{
+	top: -10px;
+	left: 50%;
+	margin-left: -5px;
+	cursor: n-resize;
+}
+#resizeNW{
+	top: -10px;
+	left: -10px;
+	cursor: nw-resize;
+}
+#resizeW
+{
+	top: 50%;
+	left: -10px;
+	margin-top: -5px;
+	cursor: w-resize;
+}
+#resizeSW
+{
+	left: -10px;
+	bottom: -10px;
+	cursor: sw-resize;
+}
+#resizeS
+{
+	bottom: -10px;
+	left: 50%;
+	margin-left: -5px;
+	cursor: s-resize;
+}
+#crop_container
+{
+	width: {{crop_img_width}}px;
+	height: {{crop_img_height}}px;
+	background-color: #ccc;
+	background-image: url({{crop_img_dark}});
+	text-align:left;
+}
+
+#crop_form input[type="submit"] {
+	width: 20%;
+	padding: 10px;
+	font-size: 200%;
+	margin: 20px 50px 20px 0;
+}
+
+#crop_top { font-size: 110%; }
+
+#crop_top ul { margin: 1em; margin-left: 2em; }
+#crop_top ul li { list-style: disc outside; }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+	
+	<div id="crop_top">
+
+        {% if 'new=1' not in request.get_full_path %}
+            <h1>Upload New Profile Picture</h1>
+            Select an image file on your computer
+            <form 
+                    action="{% url profile_crop campaign_slug=campaign.slug %}" 
+                    method="post" 
+                    enctype="multipart/form-data"> 
+                <input type="file" name="picture" />
+                <input type="submit" value="Upload" />
+            </form>
+            <small>Picture should be at least 288px wide by 235px high. 
+                We'll help you crop anything bigger.</small><br/>
+            <small>Large images, for example from a digital camera, 
+                may take several minutes to upload.</small>
+        {% endif %}
+             
+		{% if messages %}
+		<ul class="errors">
+		    {% for message in messages %}
+		    <li>{{ message }}</li>
+		    {% endfor %}
+		</ul>
+		{% endif %}
+		 
+		{% if has_pic %}
+			<h1>Crop Profile Picture</h1>
+			
+			<h3>Select the portion of your uploaded image that you would like to use for your profile picture.</h3>
+			<ul>
+				<li><strong>Resize</strong> crop selection by grabbing and moving the black corner squares.</li>
+				<li><strong>Move</strong> crop selection by clicking and dragging inside the highlighted section.</li>
+			</ul> 
+			<p>Click <strong>Save</strong> when you're done</p>
+		
+			<div id="crop_container"></div>
+		
+			<div id="resizeMe">
+				<div id="resizeSE"></div>
+				<div id="resizeE"></div>
+				<div id="resizeNE"></div>
+				<div id="resizeN"></div>
+				<div id="resizeNW"></div>
+				<div id="resizeW"></div>
+				<div id="resizeSW"></div>
+				<div id="resizeS"></div>
+			</div>
+				
+			<div id="log"></div>
+			
+            <form 
+                    action="{% url profile_crop campaign_slug=campaign.slug %}" 
+                    method="post" 
+                    id="crop_form">
+				<input id="left" name="left" type="hidden" />
+				<input id="top" name="top" type="hidden" />
+				<input id="width" name="width" type="hidden" />
+				<input id="height" name="height" type="hidden" />
+				<input type="submit" value="Save" />
+                {% if 'new=1' not in request.get_full_path %}
+                    <a href="/">Cancel</a>
+                {% endif %}
+			</form>
+		{% endif %}
+		
+	</div>
+	
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+<script type="text/javascript" src="/media/js/interface.js"></script>
+
+{% if has_pic %}
+	<script type="text/javascript">
+	
+	function updateForm(offsetLeft, offsetTop) {
+		
+		$('#width').val( $('#resizeMe').width() );
+		$('#height').val( $('#resizeMe').height() );
+	
+		var pos = $('#resizeMe').position();
+		$('#top').val( parseInt(pos.top - offsetTop) );
+		$('#left').val( parseInt(pos.left - offsetLeft) );
+	}
+	
+	$(function() {
+	
+		var bgPos = $('#crop_container').position();
+		var offsetTop = bgPos.top;
+		var offsetLeft = bgPos.left;
+		
+		$('#resizeMe').css('top', offsetTop);
+		$('#resizeMe').css('left', offsetLeft);
+	
+		// The sizes we need to fill the picture box on the dashboard
+		var baseWidth = {{base_width}};
+		var baseHeight = {{base_height}};
+		var aspectRatio = {{aspect_ratio}};
+		
+		$('#resizeMe').Resizable(
+			{
+				minWidth: baseWidth,
+				minHeight: baseHeight,
+				maxWidth: {{crop_img_width}},
+				maxHeight: {{crop_img_width}} / aspectRatio,
+				minTop: offsetTop,
+				minLeft: offsetLeft,
+				maxRight: {{crop_img_width}} + offsetLeft,
+				maxBottom: {{crop_img_height}} + offsetTop,
+				ratio: 1/aspectRatio,
+				dragHandle: true,
+				onDrag: function(x, y)
+				{
+					this.style.backgroundPosition = '-' + (x - offsetLeft) + 'px -' + (y - offsetTop) + 'px';
+					updateForm(offsetLeft, offsetTop);
+				},
+				handlers: {
+					se: '#resizeSE',
+					e: '#resizeE',
+					ne: '#resizeNE',
+					n: '#resizeN',
+					nw: '#resizeNW',
+					w: '#resizeW',
+					sw: '#resizeSW',
+					s: '#resizeS'
+				},
+				onResize : function(size, position) {
+					this.style.backgroundPosition = '-' + (position.left - offsetLeft) + 'px -' + (position.top - offsetTop) + 'px';
+					updateForm(offsetLeft, offsetTop);
+				}
+			}
+		);
+	
+		updateForm(offsetLeft, offsetTop);
+	});
+	
+	</script>
+{% endif %}
+
+{% endblock %}

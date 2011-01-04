@@ -1,0 +1,300 @@
+@charset "UTF-8";
+/* From defaults.css */
+
+#header {
+    background: #222;
+    border: none;
+    padding: 0;
+    line-height: 1;
+    font: 14px arial,helvetica,clean,sans-serif;
+}
+#nav {
+    background: #222;
+    border-color: #333;
+}
+#footer-inner {
+    color: #777;
+    border-top: 1px solid #ccc;
+}
+
+/* From base.css */
+#header a {
+	color: #26797F;
+	text-decoration: none;
+}
+#header a:visited {
+	color: #416f75;
+}
+
+#header a:active {
+	border: none;
+}
+
+a:active, a:focus, a:active {
+    outline: none;
+    -moz-outline-style: none;
+}
+
+#header {
+	height: 145px;
+	background: url(/media/organization/dsf/wood-masthead.jpg) repeat-x center;
+}
+
+#header-inner {
+	width: 945px;
+	background: url(/media/organization/dsf/logo-david.png) no-repeat 21px 0;
+	padding: 0px 21px 0px 21px;
+	position: relative;
+	top: 0px;
+	margin: 0 auto;
+	text-align: left;
+}
+#homelink {
+	display: block;
+	width: 375px;
+	height: 145px;
+	cursor: pointer;
+	position: relative;
+	left: 22px;
+	top: 0;
+	z-index: 50;
+}
+
+#homelink a {
+	display: block;
+	width: 375px;
+	height: 145px;
+	cursor: pointer;
+	position: relative;
+	left: 22px;
+	top: 0;
+	z-index: 50;
+}
+#nav-background  {
+    background:none repeat scroll 0 0 #80746B;
+    height:37px;
+    padding:0;
+    position:absolute;
+    right:110px;
+    top:108px;
+    width:433px;
+    z-index:60;
+}
+
+#nav {
+	height: 37px;
+	width: 522px;
+	padding: 0;
+	position: absolute;
+	top: 108px;
+	right: 21px;
+	background: none;
+	z-index: 100;
+}
+
+#nav ul { 
+	position: relative;
+	list-style-type: none;
+}
+
+#nav li { 
+	zoom: 1;
+	float: left;
+}
+
+#nav li a {
+	float: left;
+	display: block;
+	width: 100%;    
+	height: 37px;
+	padding: 0;
+	color: inherit;
+	border: none;
+}
+/* drop-down section */
+.sub_menu {
+	width: 245px;
+	visibility: hidden;
+	position: absolute !important;
+	border: 1px solid #ccc;
+	border-top: none;
+	left: -1px;
+	top: 100%;
+	list-style: none;
+}
+
+#issues ul {
+	width: 200px;
+}
+
+.sub_menu li {
+	float: none !important;
+	background: #fff;
+	border: none;
+	padding: 7px 12px 2px 12px;
+	font-size: 0.875em;
+}
+
+.sub_menu li:first-child {
+	padding-top: 12px;
+}
+
+.sub_menu a {
+	float: none !important;
+	height: 20px !important;
+	color: #26797f;
+	border: none;
+	width: 100%; 
+	/* IE 6/7 needs this */
+	display: inline-block !important;
+	color: #333;
+}
+#about-us:hover, #issues:hover, #what-you-can-do:hover, #david:hover, #donate:hover {
+	background-position: 100% -37px;
+	border: none;
+	color: #38332f;
+	position: relative;
+	height: 37px;
+}
+
+ul.dropdown li:hover > ul { 
+	visibility: visible;
+}
+
+#about-us {
+	float: left;
+	background: url("/media/organization/dsf/about.jpg") no-repeat left top;
+	margin: 0;
+	padding: 0;
+	text-indent: -9999px;
+	width: 97px;
+}
+
+#issues {
+	float: left;
+	background: url("/media/organization/dsf/issues.jpg") no-repeat left top;
+	margin: 0;
+	padding: 0;
+	text-indent: -9999px;
+	width: 90px;
+}
+
+#what-you-can-do {
+	float: left;
+	background: url("/media/organization/dsf/what-you-can-do.jpg") no-repeat left top;
+	margin: 0;
+	padding: 0;
+	text-indent: -9999px;
+	width: 177px;
+}
+
+#david {
+	float: left;
+	background: url("/media/organization/dsf/david.jpg") no-repeat left top;
+	margin: 0;
+	padding: 0;
+	text-indent: -9999px;
+	width: 69px;
+}
+
+#donate {
+	float: left;
+	background: url("/media/organization/dsf/donate.jpg") no-repeat left top;
+	margin: 0 0 0 6px;
+	padding: 0;
+	text-indent: -9999px;
+	width: 82px;
+}
+
+/* makes text in drop-down appear */
+#issues li, #what-you-can-do li {
+	text-indent: 0px;
+}
+
+#footer {
+    font: 16px arial,helvetica,clean,sans-serif;
+	background: #181614;
+	width: 100%;
+	height: 90px; /* temporarily reduced from 125px; */
+	position: relative;
+	top: 0px; /*sidebar is 39px from top */
+	margin: 0px auto;
+	clear: both;
+	padding: 0 0 30px 0;
+}
+#footer a {
+    text-decoration: none;
+}
+
+#footer-inner {
+	width: 943px;
+	margin: 0 auto;
+	padding: 21px 22px 0px 22px;
+	border: none;
+	text-align: left;
+	font-size: 0.938em;
+	height: 100%;
+}
+
+#footer ul {
+	padding-left: 0px;
+	margin: 0px;
+	list-style-type: none;
+}
+
+#footer li a {
+	color: #fff;
+    margin: 0;
+}
+
+#footer li a:hover {
+	color: #669192;
+}
+#footer-items {
+	width: 780px;
+	float: left;
+}
+
+#logo {
+	float: right;
+	display: inline;
+	width: 140px;
+	height: 77px;
+}
+
+#footer-nav-inner {
+	float: left;
+	padding: 0 0 15px 0;
+}
+
+#footer-nav-inner li {
+	display: inline;
+	margin: 8px 22px 0 0;
+}
+
+#footer-nav-inner li a {
+	color: #fff;
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+}
+
+#footer-nav-inner li a:hover {
+	color: #00ABB1;
+}
+#socialmedia {
+	height: 23px;
+	width: 750px;
+	padding: 10px 0 0 0;
+	position: relative;
+	height: 44px;
+	float: left;
+}
+
+#socialmedia ul {
+	display: inline;
+	list-style-type: none;
+}
+
+#socialmedia li {
+	margin: 0 22px 0 0;
+}
+

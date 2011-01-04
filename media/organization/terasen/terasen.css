@@ -1,0 +1,150 @@
+
+/*
+body {
+    background:#FFFFFF url(http://www.terasengas.com/Gas/assets/images/templates/bg_body.gif) repeat-x scroll left top;
+}
+*/
+.tg-Header {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    background:#FFFFFF none repeat scroll 0 0;
+    /*border-left:1px solid #D3D3D3;*/
+    border-bottom: 1px solid #25BEE0;
+    height:93px;
+    voice-family:inherit;
+}
+
+.tg-Logo a {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    background:transparent none repeat scroll 0 0;
+    color:#FFFFFF;
+    display:block;
+    float:left;
+    font-size:1px;
+    height:93px;
+    letter-spacing:-1em;
+    line-height:1px;
+    width:110px;
+}
+
+ul.tg-NavHeader {
+    font-size:12px;
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin:0;
+    padding:10px 0 0 110px;
+    text-align:right;
+    white-space:nowrap;
+}
+
+ul.tg-NavHeader li {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    background:transparent url(http://www.terasengas.com/Gas/assets/images/templates/bg_NavHeader.gif) no-repeat scroll right top;
+    display:inline;
+    margin:0;
+    padding:0 9px;
+    text-transform:capitalize;
+    padding-left: 18px;
+}
+
+.tg-NavHeader a {
+    color:#00A0C4;
+    text-decoration:none;
+}
+
+ul.tg-NavHeader li#tg-LastListItem {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    background:transparent none repeat scroll 0 0;
+    display:inline;
+}
+
+ul.tg-NavPrimary {
+    float:right;
+    height:25px;
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin:-26px 0 0;
+    padding:0 16px 0 0;
+}
+
+ul.tg-NavPrimary li {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    background:transparent none repeat scroll 0 0;
+    display:block;
+    float:left;
+    padding-left:5px;
+    margin:0 0 0.3em 10px;
+}
+
+#navPrimary_homes {
+    background-image:url(http://www.terasengas.com/Gas/assets/images/templates/navPrimary_homes.gif);
+    width:99px;
+}
+#navPrimary_business {
+    background-image:url(http://www.terasengas.com/Gas/assets/images/templates/navPrimary_business.gif);
+    width:105px;
+}
+#navPrimary_buildingprofessionstrades {
+    background-image:url(http://www.terasengas.com/Gas/assets/images/templates/navPrimary_buildingprofessionstrades.gif);
+    width:237px;
+}
+
+.tg-NavPrimary li.selected a {
+    background-position:0 -25px;
+    color:#FFFFFF;
+}
+.tg-NavPrimary a {
+    background-position:left top;
+    background-repeat:no-repeat;
+    color:#FFFFFF;
+    content:'' '';
+    display:block;
+    float:left;
+    font-size:1px;
+    height:25px;
+    letter-spacing:-1em;
+    line-height:1px;
+    text-decoration:none;
+    text-indent:-9999px;
+}
+
+.tg-Footer {
+    background-image:url(http://www.terasengas.com/Gas/assets/images/templates/bg_Footer.png);
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    clear:both;
+    color:#FFFFFF;
+    font-size:11px;
+    padding:14px 23px 12px 60px;
+    text-align:right;
+    width: 681px;
+    margin: auto;
+}
+.tg-Footer .tg-Copyright {
+    margin-right:40px;
+}
+.tg-Footer div {
+    float:left;
+    height:20px;
+}
+.tg-Footer a {
+    color:#FFFFFF;
+    text-decoration:underline;
+}
+a.tg-FortisLink {
+    color:#004F93;
+}
+
+

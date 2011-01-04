@@ -1,0 +1,12 @@
+
+{% for activity in activity_list %}
+    {% include 'status/detail_include.html' %}
+{% empty %}
+
+    {% if af_user %}
+        <a href="{{af_user.get_absolute_url}}">{{af_user}}</a> has no feed entries.
+    {% else %}
+        No feed entries yet
+    {% endif %}
+
+{% endfor %}

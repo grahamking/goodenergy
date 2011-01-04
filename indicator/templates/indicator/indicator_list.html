@@ -1,0 +1,31 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+    <h2>{{campaign}}</h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Postion</th>
+            <th>Question</th>
+            <th>Delete</th>
+        </tr>
+        {% for indicator in indicator_list %}
+            <tr>
+                <td>
+                    <a href="{% url indicator_edit indicator_id=indicator.id %}">
+                        {{indicator.name}}
+                    </a>
+                </td>
+                <td>{{indicator.position}}</td>
+                <td>{{indicator.question}}</td>
+                <td><a href="{% url indicator_delete indicator_id=indicator.id %}">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <p>
+        <a href="{% url indicator_create campaign_id=campaign.id %}">Add an indicator</a>
+    </p>
+
+{% endblock %}

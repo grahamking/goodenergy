@@ -18,23 +18,27 @@ Good Energy is free software, licensed under the [GNU Affero General Public Lice
 ### Get Dependencies:
 
 The obvious stuff:
-    - Python 2.6+
-    - Django 1.3+ 
-    - A Django supported database. Tested with MySQL and Postgres.
-    - Memcached and it's python lib (See: http://docs.djangoproject.com/en/dev/topics/cache/#memcached). Memcached is not optional.
+
+  - Python 2.6+
+  - Django 1.3+ 
+  - A Django supported database. Tested with MySQL and Postgres.
+  - Memcached and it's python lib (See: http://docs.djangoproject.com/en/dev/topics/cache/#memcached). Memcached is not optional.
 
 Python libs:
-    - pytz: http://pytz.sourceforge.net/ (Ubuntu package: **python-tz**)
-    - Python Imaging Library (PIL): http://effbot.org/zone/pil-index.htm (Ubuntu package: **python-imaging**)
+
+  - pytz: http://pytz.sourceforge.net/ (Ubuntu package: **python-tz**)
+  - Python Imaging Library (PIL): http://effbot.org/zone/pil-index.htm (Ubuntu package: **python-imaging**)
 
 Django apps:
-    - sorl.thumbnail: http://thumbnail.sorl.net/ (**pip install sorl-thumbnail**)
-    - django-compress: http://code.google.com/p/django-compress/ (Checkout source and _python setup.py install_)
+
+  - sorl.thumbnail: http://thumbnail.sorl.net/ (**pip install sorl-thumbnail**)
+  - django-compress: http://code.google.com/p/django-compress/ (Checkout source and _python setup.py install_)
 
 For the back-end worker (optional):
-    - Gearman: http://gearman.org/ (Ubuntu package: **gearman-job-server**)
-    - python-libgearman: http://pypi.python.org/pypi/python-libgearman/ (Ubuntu package: **python-gearman.libgearman**)
-    - oilcan: http://github.com/grahamking/oilcan (See README at that url)
+
+  - Gearman: http://gearman.org/ (Ubuntu package: **gearman-job-server**)
+  - python-libgearman: http://pypi.python.org/pypi/python-libgearman/ (Ubuntu package: **python-gearman.libgearman**)
+  - oilcan: http://github.com/grahamking/oilcan (See README at that url)
 
 ### Generate SECRET_KEY.
 

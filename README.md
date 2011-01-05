@@ -16,17 +16,23 @@ You should have at least basic Django, Unix, and database skills before trying t
 ### Get Dependencies:
 
 The obvious stuff:
-    - Django 1.3+. 
+    - Python 2.6+
+    - Django 1.3+ 
     - A Django supported database. Tested with MySQL and Postgres.
-    - Memcached
+    - Memcached and it's python lib (See: http://docs.djangoproject.com/en/dev/topics/cache/#memcached). Memcached is not optional.
+
+Python libs:
+    - pytz: http://pytz.sourceforge.net/ (Ubuntu package: **python-tz**)
+    - Python Imaging Library (PIL): http://effbot.org/zone/pil-index.htm (Ubuntu package: **python-imaging**)
 
 Django apps:
-    - sorl.thumbnail: http://thumbnail.sorl.net/
-    - django-compress: http://code.google.com/p/django-compress/
+    - sorl.thumbnail: http://thumbnail.sorl.net/ (**pip install sorl-thumbnail**)
+    - django-compress: http://code.google.com/p/django-compress/ (Checkout source and _python setup.py install_)
 
-### Tweak settings.py
-
-Put in your database details, file paths, and so on. You can override any settings with a local_settings.py file in the same directory as settings.py.
+For the back-end worker (optional):
+    - Gearman: http://gearman.org/ (Ubuntu package: **gearman-job-server**)
+    - python-libgearman: http://pypi.python.org/pypi/python-libgearman/ (Ubuntu package: **python-gearman.libgearman**)
+    - oilcan: http://github.com/grahamking/oilcan (See README at that url)
 
 ### Generate SECRET_KEY.
 
@@ -36,11 +42,28 @@ Run this command:
 
 and in settings.py assign the result to SECRET_KEY (around line 122).
 
-### Init database
+### Create and init database, tweaks settings
 
-A sample campaign is created via Django's fixtures when you syncdb:
+Create a database and user (suggested name: _goodenergy_).
+
+MySQL:
+    CREATE DATABASE goodenergy CHARACTER SET utf8 collate utf8_general_ci;
+    GRANT ALL ON goodenergy.* TO goodenergy@localhost IDENTIFIED BY 'goodenergy';
+
+Postgres:
+    CREATE DATABASE goodenergy ENCODING 'utf8';
+    CREATE USER goodenergy SUPERUSER;
+    ALTER USER goodenergy WITH PASSWORD 'goodenergy';
+
+If you didn't use 'goodenergy' for the database, user, and password, change settings.py to reflect that.
+
+That should be enough to run the dev server. For live you'll need to tweak the file paths in settings.py. You can override any settings with a local_settings.py file in the same directory as settings.py.
+
+Initialize the databse:
 
     ./manage.py syncdb
+
+That creates a sample campaign for you to play with.
 
 # Business objects
 

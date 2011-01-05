@@ -229,6 +229,7 @@ button.link {
 }
 #footer p {
 	float:right;
+    margin-left: 5px;
 }
 #footer ul {
 	float:left;

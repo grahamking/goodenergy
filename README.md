@@ -11,6 +11,8 @@ WARNING: Good Energy is currently [abandon-ware](http://en.wikipedia.org/wiki/Ab
 
 You should have at least basic Django, Unix, and database skills before trying to set up this app. As long as you understand that, and you need a behavior change / employee engagement tool, we think you'll really like Good Energy.
 
+Good Energy is free software, licensed under the [GNU Affero General Public License](http://www.gnu.org/licenses/agpl.html).
+
 # Installation
 
 ### Get Dependencies:

@@ -1,13 +1,10 @@
-
-Start by trying out the demo here: http://live.goodenergy.ca
-
 Good Energy is a behavior change and employee engagement tool. It uses key results from social psychology research (social norms, pledges, identity) to assist individuals in achieving their goals. It has been deployed in production with the David Suzuki Foundation, focused on environmental sustainability, and with a Vancouver area school, focused on student self-improvement.
 
 Good Energy was designed as a white-label product. The company purchasing it brands the header, footer, and CSS to look like their site. It then looks integrated into either a company Intranet, or a public Internet.
 
 The questions you get asked (top center), as well as the default Pledges (bottom right) are configurable via the django admin interface.
 
-WARNING: Good Energy is currently [abandon-ware](http://en.wikipedia.org/wiki/Abandonware). You could probably hire the original developers (see http://goodenergy.ca) to assist in a deployment, and with behavior change consulting, but there's no offical support for it, and we're both pretty busy.
+WARNING: Good Energy is currently [abandon-ware](http://en.wikipedia.org/wiki/Abandonware). You could probably hire the original developers (https://github.com/grahamking or https://github.com/jeremydosborn) to assist in a deployment, and with behavior change consulting, but there's no offical support for it, and we're both pretty busy.
 
 You should have at least basic Django, Unix, and database skills before trying to set up this app. As long as you understand that, and you need a behavior change / employee engagement tool, we think you'll really like Good Energy.
 
